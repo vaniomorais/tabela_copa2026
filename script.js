@@ -1,0 +1,1465 @@
+// ================== ESTRUTURA DE GRUPOS ==================
+// Dados dos 12 grupos da Copa 2026
+let grupos = {
+  A: {
+    mx: { nome: "México", codigo: "mx", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    za: { nome: "África do Sul", codigo: "za", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    kr: { nome: "Coreia do Sul", codigo: "kr", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    cz: { nome: "Tchéquia", codigo: "cz", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  B: {
+    ca: { nome: "Canadá", codigo: "ca", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    ba: { nome: "Bósnia e Herzegovina", codigo: "ba", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    qa: { nome: "Catar", codigo: "qa", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    ch: { nome: "Suíça", codigo: "ch", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  C: {
+    br: { nome: "Brasil", codigo: "br", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    ma: { nome: "Marrocos", codigo: "ma", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    ht: { nome: "Haiti", codigo: "ht", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    "gb-sct": { nome: "Escócia", codigo: "gb-sct", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  D: {
+    us: { nome: "Estados Unidos", codigo: "us", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    py: { nome: "Paraguai", codigo: "py", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    au: { nome: "Austrália", codigo: "au", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    tr: { nome: "Turquia", codigo: "tr", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  E: {
+    de: { nome: "Alemanha", codigo: "de", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    cw: { nome: "Curaçao", codigo: "cw", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    ci: { nome: "Costa do Marfim", codigo: "ci", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    ec: { nome: "Equador", codigo: "ec", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  F: {
+    nl: { nome: "Holanda", codigo: "nl", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    jp: { nome: "Japão", codigo: "jp", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    se: { nome: "Suécia", codigo: "se", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    tn: { nome: "Tunísia", codigo: "tn", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  G: {
+    be: { nome: "Bélgica", codigo: "be", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    eg: { nome: "Egito", codigo: "eg", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    ir: { nome: "Irã", codigo: "ir", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    nz: { nome: "Nova Zelândia", codigo: "nz", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  H: {
+    es: { nome: "Espanha", codigo: "es", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    cv: { nome: "Cabo Verde", codigo: "cv", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    sa: { nome: "Arábia Saudita", codigo: "sa", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    uy: { nome: "Uruguai", codigo: "uy", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  I: {
+    fr: { nome: "França", codigo: "fr", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    sn: { nome: "Senegal", codigo: "sn", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    iq: { nome: "Iraque", codigo: "iq", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    no: { nome: "Noruega", codigo: "no", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  J: {
+    ar: { nome: "Argentina", codigo: "ar", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    dz: { nome: "Argélia", codigo: "dz", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    at: { nome: "Áustria", codigo: "at", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    jo: { nome: "Jordânia", codigo: "jo", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  K: {
+    pt: { nome: "Portugal", codigo: "pt", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    cd: { nome: "RD do Congo", codigo: "cd", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    uz: { nome: "Uzbequistão", codigo: "uz", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    co: { nome: "Colômbia", codigo: "co", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  },
+  L: {
+    "gb-eng": { nome: "Inglaterra", codigo: "gb-eng", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    hr: { nome: "Croácia", codigo: "hr", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    gh: { nome: "Gana", codigo: "gh", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 },
+    pa: { nome: "Panamá", codigo: "pa", pontos: 0, vitorias: 0, empates: 0, derrotas: 0, saldo: 0, gm: 0, gs: 0 }
+  }
+};
+
+// ================== JOGOS POR RODADA (HORÁRIO DE BRASÍLIA) ==================
+let jogos = [
+  // RODADA 1
+  { rodada: 1, data: "2026-06-11", hora: "16:00", grupo: "A", time1: "mx", time2: "za", resultado: null },
+  { rodada: 1, data: "2026-06-11", hora: "23:00", grupo: "A", time1: "kr", time2: "cz", resultado: null },
+  { rodada: 1, data: "2026-06-12", hora: "16:00", grupo: "B", time1: "ca", time2: "ba", resultado: null },
+  { rodada: 1, data: "2026-06-12", hora: "22:00", grupo: "D", time1: "us", time2: "py", resultado: null },
+  { rodada: 1, data: "2026-06-13", hora: "16:00", grupo: "B", time1: "qa", time2: "ch", resultado: null },
+  { rodada: 1, data: "2026-06-13", hora: "19:00", grupo: "C", time1: "br", time2: "ma", resultado: null },
+  { rodada: 1, data: "2026-06-13", hora: "22:00", grupo: "C", time1: "ht", time2: "gb-sct", resultado: null },
+  { rodada: 1, data: "2026-06-14", hora: "01:00", grupo: "D", time1: "au", time2: "tr", resultado: null },
+  { rodada: 1, data: "2026-06-14", hora: "14:00", grupo: "E", time1: "de", time2: "cw", resultado: null },
+  { rodada: 1, data: "2026-06-14", hora: "17:00", grupo: "F", time1: "nl", time2: "jp", resultado: null },
+  { rodada: 1, data: "2026-06-14", hora: "20:00", grupo: "E", time1: "ci", time2: "ec", resultado: null },
+  { rodada: 1, data: "2026-06-14", hora: "23:00", grupo: "F", time1: "se", time2: "tn", resultado: null },
+  { rodada: 1, data: "2026-06-15", hora: "13:00", grupo: "H", time1: "es", time2: "cv", resultado: null },
+  { rodada: 1, data: "2026-06-15", hora: "16:00", grupo: "G", time1: "be", time2: "eg", resultado: null },
+  { rodada: 1, data: "2026-06-15", hora: "19:00", grupo: "H", time1: "sa", time2: "uy", resultado: null },
+  { rodada: 1, data: "2026-06-15", hora: "22:00", grupo: "G", time1: "ir", time2: "nz", resultado: null },
+  { rodada: 1, data: "2026-06-16", hora: "16:00", grupo: "I", time1: "fr", time2: "sn", resultado: null },
+  { rodada: 1, data: "2026-06-16", hora: "19:00", grupo: "I", time1: "iq", time2: "no", resultado: null },
+  { rodada: 1, data: "2026-06-16", hora: "22:00", grupo: "J", time1: "ar", time2: "dz", resultado: null },
+  { rodada: 1, data: "2026-06-17", hora: "01:00", grupo: "J", time1: "at", time2: "jo", resultado: null },
+  { rodada: 1, data: "2026-06-17", hora: "14:00", grupo: "K", time1: "pt", time2: "cd", resultado: null },
+  { rodada: 1, data: "2026-06-17", hora: "17:00", grupo: "L", time1: "gb-eng", time2: "hr", resultado: null },
+  { rodada: 1, data: "2026-06-17", hora: "20:00", grupo: "L", time1: "gh", time2: "pa", resultado: null },
+  { rodada: 1, data: "2026-06-17", hora: "23:00", grupo: "K", time1: "uz", time2: "co", resultado: null },
+  
+  // RODADA 2
+  { rodada: 2, data: "2026-06-18", hora: "13:00", grupo: "A", time1: "cz", time2: "za", resultado: null },
+  { rodada: 2, data: "2026-06-18", hora: "16:00", grupo: "B", time1: "ch", time2: "ba", resultado: null },
+  { rodada: 2, data: "2026-06-18", hora: "19:00", grupo: "B", time1: "ca", time2: "qa", resultado: null },
+  { rodada: 2, data: "2026-06-18", hora: "22:00", grupo: "A", time1: "mx", time2: "kr", resultado: null },
+  { rodada: 2, data: "2026-06-19", hora: "16:00", grupo: "C", time1: "gb-sct", time2: "ma", resultado: null },
+  { rodada: 2, data: "2026-06-19", hora: "16:00", grupo: "D", time1: "us", time2: "au", resultado: null },
+  { rodada: 2, data: "2026-06-19", hora: "22:00", grupo: "C", time1: "br", time2: "ht", resultado: null },
+  { rodada: 2, data: "2026-06-20", hora: "00:00", grupo: "D", time1: "tr", time2: "py", resultado: null },
+  { rodada: 2, data: "2026-06-20", hora: "14:00", grupo: "F", time1: "nl", time2: "se", resultado: null },
+  { rodada: 2, data: "2026-06-20", hora: "17:00", grupo: "E", time1: "de", time2: "ci", resultado: null },
+  { rodada: 2, data: "2026-06-20", hora: "21:00", grupo: "E", time1: "ec", time2: "cw", resultado: null },
+  { rodada: 2, data: "2026-06-21", hora: "01:00", grupo: "F", time1: "tn", time2: "jp", resultado: null },
+  { rodada: 2, data: "2026-06-21", hora: "13:00", grupo: "H", time1: "es", time2: "sa", resultado: null },
+  { rodada: 2, data: "2026-06-21", hora: "16:00", grupo: "G", time1: "be", time2: "ir", resultado: null },
+  { rodada: 2, data: "2026-06-21", hora: "19:00", grupo: "H", time1: "uy", time2: "cv", resultado: null },
+  { rodada: 2, data: "2026-06-21", hora: "22:00", grupo: "G", time1: "nz", time2: "eg", resultado: null },
+  { rodada: 2, data: "2026-06-22", hora: "14:00", grupo: "J", time1: "ar", time2: "at", resultado: null },
+  { rodada: 2, data: "2026-06-22", hora: "18:00", grupo: "I", time1: "fr", time2: "iq", resultado: null },
+  { rodada: 2, data: "2026-06-22", hora: "21:00", grupo: "I", time1: "no", time2: "sn", resultado: null },
+  { rodada: 2, data: "2026-06-23", hora: "00:00", grupo: "J", time1: "jo", time2: "dz", resultado: null },
+  { rodada: 2, data: "2026-06-23", hora: "14:00", grupo: "K", time1: "pt", time2: "uz", resultado: null },
+  { rodada: 2, data: "2026-06-23", hora: "17:00", grupo: "L", time1: "gb-eng", time2: "gh", resultado: null },
+  { rodada: 2, data: "2026-06-23", hora: "20:00", grupo: "L", time1: "pa", time2: "hr", resultado: null },
+  { rodada: 2, data: "2026-06-23", hora: "23:00", grupo: "K", time1: "co", time2: "cd", resultado: null },
+  
+  // RODADA 3 (Com jogos simultâneos nos grupos)
+  { rodada: 3, data: "2026-06-24", hora: "16:00", grupo: "B", time1: "ch", time2: "ca", resultado: null },
+  { rodada: 3, data: "2026-06-24", hora: "16:00", grupo: "B", time1: "ba", time2: "qa", resultado: null },
+  { rodada: 3, data: "2026-06-24", hora: "19:00", grupo: "C", time1: "gb-sct", time2: "br", resultado: null },
+  { rodada: 3, data: "2026-06-24", hora: "19:00", grupo: "C", time1: "ma", time2: "ht", resultado: null },
+  { rodada: 3, data: "2026-06-24", hora: "22:00", grupo: "A", time1: "cz", time2: "mx", resultado: null },
+  { rodada: 3, data: "2026-06-24", hora: "22:00", grupo: "A", time1: "za", time2: "kr", resultado: null },
+  { rodada: 3, data: "2026-06-25", hora: "17:00", grupo: "E", time1: "ec", time2: "de", resultado: null },
+  { rodada: 3, data: "2026-06-25", hora: "17:00", grupo: "E", time1: "cw", time2: "ci", resultado: null },
+  { rodada: 3, data: "2026-06-25", hora: "20:00", grupo: "F", time1: "tn", time2: "nl", resultado: null },
+  { rodada: 3, data: "2026-06-25", hora: "20:00", grupo: "F", time1: "jp", time2: "se", resultado: null },
+  { rodada: 3, data: "2026-06-25", hora: "23:00", grupo: "D", time1: "tr", time2: "us", resultado: null },
+  { rodada: 3, data: "2026-06-25", hora: "23:00", grupo: "D", time1: "py", time2: "au", resultado: null },
+  { rodada: 3, data: "2026-06-26", hora: "14:00", grupo: "G", time1: "nz", time2: "be", resultado: null },
+  { rodada: 3, data: "2026-06-26", hora: "14:00", grupo: "G", time1: "eg", time2: "ir", resultado: null },
+  { rodada: 3, data: "2026-06-26", hora: "16:00", grupo: "I", time1: "no", time2: "fr", resultado: null },
+  { rodada: 3, data: "2026-06-26", hora: "16:00", grupo: "I", time1: "sn", time2: "iq", resultado: null },
+  { rodada: 3, data: "2026-06-26", hora: "21:00", grupo: "H", time1: "uy", time2: "es", resultado: null },
+  { rodada: 3, data: "2026-06-26", hora: "21:00", grupo: "H", time1: "cv", time2: "sa", resultado: null },
+  { rodada: 3, data: "2026-06-27", hora: "18:00", grupo: "L", time1: "pa", time2: "gb-eng", resultado: null },
+  { rodada: 3, data: "2026-06-27", hora: "18:00", grupo: "L", time1: "hr", time2: "gh", resultado: null },
+  { rodada: 3, data: "2026-06-27", hora: "20:30", grupo: "K", time1: "co", time2: "pt", resultado: null },
+  { rodada: 3, data: "2026-06-27", hora: "20:30", grupo: "K", time1: "cd", time2: "uz", resultado: null },
+  { rodada: 3, data: "2026-06-27", hora: "23:00", grupo: "J", time1: "jo", time2: "ar", resultado: null },
+  { rodada: 3, data: "2026-06-27", hora: "23:00", grupo: "J", time1: "dz", time2: "at", resultado: null }
+];
+
+// Variáveis globais
+let rodadaAtual = 1;
+let jogoEmEdicao = null;
+let confeteCampeaoExibido = false;
+let resultadosMataMata = {};
+try {
+    const salvo = localStorage.getItem('resultadosMataMata');
+    if (salvo) {
+        resultadosMataMata = JSON.parse(salvo);
+    }
+} catch (erro) {
+    console.error("Erro ao ler o LocalStorage. Criando nova memória...", erro);
+    resultadosMataMata = {};
+}
+
+// ================== FUNÇÕES DE TABELAS ==================
+function gerarTabelas() {
+  const container = document.getElementById("gruposContainer");
+  container.innerHTML = "";
+
+  Object.keys(grupos).forEach(grupoId => {
+    const div = document.createElement("div");
+    div.className = "grupo-wrapper";
+    div.innerHTML = `
+      <h3 class="grupo-titulo">Grupo ${grupoId}</h3>
+      <table id="grupo${grupoId}" class="tabela-grupo">
+        <thead>
+          <tr>
+            <th class="col-c">Pos</th>
+            <th class="col-s">Seleção</th>
+            <th class="col-p">Pts</th>
+            <th class="col-j">J</th>
+            <th class="col-v">V</th>
+            <th class="col-e">E</th>
+            <th class="col-d">D</th>
+            <th class="col-gm">GM</th>
+            <th class="col-gs">GS</th>
+            <th class="col-sg">SG</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    `;
+    container.appendChild(div);
+    atualizarTabela(grupoId);
+  });
+}
+
+function atualizarTabela(grupoId) {
+  const corpo = document.querySelector(`#grupo${grupoId} tbody`);
+  corpo.innerHTML = "";
+
+  const ordenado = calcularRanking(grupoId);
+
+  ordenado.forEach((pais, index) => {
+    const linha = document.createElement("tr");
+    const posicao = index + 1;
+    let classeDestaque = "";
+    
+    if (posicao === 1 || posicao === 2) {
+      classeDestaque = "classificado";
+    } else if (posicao === 3) {
+            if (todosGruposConcluidos() && verificarSeMelhorTerceiro(pais.codigo)) {
+              classeDestaque = "classificado";
+            } else {
+              classeDestaque = "eliminado";
+            }
+
+    } else if (posicao === 4) {
+      classeDestaque = "eliminado";
+    }   
+    linha.className = classeDestaque;
+    const totalJogos = pais.vitorias + pais.empates + pais.derrotas;
+    
+    linha.innerHTML = `
+      <td><strong>${posicao}º</strong></td>
+      <td class="selecao-padrao">
+        <img src="https://flagcdn.com/w40/${pais.codigo}.png" alt="${pais.nome}" onerror="this.src='https://via.placeholder.com/40x30?text=?'">
+        <span>${pais.nome}</span>
+      </td>
+      <td class="pontos"><strong>${pais.pontos}</strong></td>
+      <td>${totalJogos}</td>
+      <td class="col-v">${pais.vitorias}</td>
+      <td class="col-e">${pais.empates}</td>
+      <td class="col-d">${pais.derrotas}</td>
+      <td>${pais.gm}</td>
+      <td class="col-gs">${pais.gs}</td>
+      <td class="saldo">${pais.saldo > 0 ? '+' : ''}${pais.saldo}</td>
+    `;
+    corpo.appendChild(linha);
+  });
+}
+
+function focarGrupo(grupoId) {
+  const tabelaGrupo = document.getElementById(`grupo${grupoId}`);
+  if (tabelaGrupo) {
+    // Acessa o contêiner do grupo (grupo-wrapper) para incluir o título na rolagem
+    const wrapper = tabelaGrupo.closest('.grupo-wrapper') || tabelaGrupo;
+    wrapper.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+// ================== FUNÇÕES DE RODADAS E JOGOS ==================
+function obterJogosDaRodada(rodada) {
+  return jogos
+    .filter(j => j.rodada === rodada)
+    .sort((a, b) => {
+      const dataA = new Date(`${a.data}T${a.hora}`);
+      const dataB = new Date(`${b.data}T${b.hora}`);
+      return dataA - dataB;
+    });
+}
+
+function formatarData(dataStr) {
+  const data = new Date(dataStr + "T00:00:00");
+  return data.toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "2-digit" });
+}
+
+function renderizarJogosDaRodada() {
+  const jogosList = document.getElementById("jogosList");
+  const jogosDaRodada = obterJogosDaRodada(rodadaAtual);
+
+  const jogosComIndice = jogosDaRodada.map(jogo => ({
+    ...jogo,
+    jogoIndex: jogos.indexOf(jogo)
+  })).sort((a, b) => {
+    const dataA = new Date(`${a.data}T${a.hora}`);
+    const dataB = new Date(`${b.data}T${b.hora}`);
+    return dataA - dataB;
+  });
+
+  jogosList.innerHTML = "";
+
+  jogosComIndice.forEach((jogoData) => {
+    const jogo = jogoData;
+    const time1 = grupos[jogo.grupo][jogo.time1];
+    const time2 = grupos[jogo.grupo][jogo.time2];
+    
+    // Trava de segurança para evitar erro se houver falha na configuração
+    if (!time1 || !time2) {
+      console.warn(`Erro: A equipa não foi encontrada no Grupo ${jogo.grupo}. Verifique os códigos: ${jogo.time1} x ${jogo.time2}`);
+      return; 
+    }
+    
+    const divJogo = document.createElement("div");
+    divJogo.className = `jogo-card ${jogo.resultado ? 'realizado' : ''}`;
+    divJogo.id = `jogo-${jogo.jogoIndex}`;
+
+    if (jogo.resultado) {
+      divJogo.innerHTML = `
+        <div class="jogo-resultado">
+          <div class="grupo-badge" onclick="focarGrupo('${jogo.grupo}')" title="Ver tabela do Grupo ${jogo.grupo}">Grupo ${jogo.grupo}</div>
+          <div class="jogo-data-hora"><strong>${formatarData(jogo.data)}</strong> ${jogo.hora}</div>
+          <div class="placar-compacto">
+            <div class="selecao-padrao">
+              <img src="https://flagcdn.com/w40/${time1.codigo}.png" alt="${time1.nome}" title="${time1.nome}">
+            </div>
+            <div class="gols-mini">${jogo.resultado.gols1}x${jogo.resultado.gols2}</div>
+            <div class="selecao-padrao">
+              <img src="https://flagcdn.com/w40/${time2.codigo}.png" alt="${time2.nome}" title="${time2.nome}">
+            </div>
+          </div>
+          <button class="btn-editar-mini" onclick="iniciarEdicao(${jogo.jogoIndex})" title="Editar">✏️</button>
+        </div>
+      `;
+    } else {
+      divJogo.innerHTML = `
+        <div class="jogo-preenchimento-compacto">
+          <div class="grupo-badge" onclick="focarGrupo('${jogo.grupo}')" title="Ver tabela do Grupo ${jogo.grupo}">Grupo ${jogo.grupo}</div>
+          <div class="jogo-data-hora"><strong>${formatarData(jogo.data)}</strong> ${jogo.hora}</div>
+          <div class="placar-compacto">
+            <div class="selecao-padrao">
+              <img src="https://flagcdn.com/w40/${time1.codigo}.png" alt="${time1.nome}" title="${time1.nome}">
+            </div>
+            <div class="inputs-gols-mini">
+              <input type="number" min="0" value="" class="input-gol-mini gol1" placeholder="-">
+              <span>x</span>
+              <input type="number" min="0" value="" class="input-gol-mini gol2" placeholder="-">
+            </div>
+            <div class="selecao-padrao">
+              <img src="https://flagcdn.com/w40/${time2.codigo}.png" alt="${time2.nome}" title="${time2.nome}">
+            </div>
+          </div>
+          <button class="btn-confirmar-mini" onclick="confirmarResultado(${jogo.jogoIndex})" title="Confirmar">✓</button>
+        </div>
+      `;
+    }
+
+    jogosList.appendChild(divJogo);
+  });
+
+  document.getElementById("rodadaTitulo").textContent = `📅 Rodada ${rodadaAtual}`;
+  document.getElementById("btnRodadaAnterior").disabled = rodadaAtual === 1;
+  document.getElementById("btnRodadaProxima").disabled = rodadaAtual === 3;
+}
+
+function confirmarResultado(jogoIndex) {
+  const jogoCard = document.getElementById(`jogo-${jogoIndex}`);
+  const gol1 = parseInt(jogoCard.querySelector(".gol1").value) || 0;
+  const gol2 = parseInt(jogoCard.querySelector(".gol2").value) || 0;
+
+  const jogo = jogos[jogoIndex];
+  if (!jogo) return;
+
+  const time1 = grupos[jogo.grupo][jogo.time1];
+  const time2 = grupos[jogo.grupo][jogo.time2];
+
+  time1.gm += gol1;
+  time1.gs += gol2;
+  time1.saldo = time1.gm - time1.gs;
+  
+  time2.gm += gol2;
+  time2.gs += gol1;
+  time2.saldo = time2.gm - time2.gs;
+
+  if (gol1 > gol2) {
+    time1.vitorias++;
+    time2.derrotas++;
+    time1.pontos += 3;
+  } else if (gol1 < gol2) {
+    time2.vitorias++;
+    time1.derrotas++;
+    time2.pontos += 3;
+  } else {
+    time1.empates++;
+    time2.empates++;
+    time1.pontos++;
+    time2.pontos++;
+  }
+
+  jogo.resultado = { gols1: gol1, gols2: gol2 };
+
+  atualizarTodasTabelas();
+  renderizarJogosDaRodada();
+  salvarDados();
+  mostrarNotificacao(`Resultado de ${time1.nome} x ${time2.nome} registrado!`, "sucesso");
+}
+
+function iniciarEdicao(jogoIndex) {
+  const jogo = jogos[jogoIndex];
+  if (!jogo || !jogo.resultado) return;
+
+  jogoEmEdicao = { jogoIndex, jogo };
+
+  const time1 = grupos[jogo.grupo][jogo.time1];
+  const time2 = grupos[jogo.grupo][jogo.time2];
+  
+  const jogoCard = document.getElementById(`jogo-${jogoIndex}`);
+  jogoCard.innerHTML = `
+    <div class="jogo-preenchimento-compacto">
+      <div class="grupo-badge" onclick="focarGrupo('${jogo.grupo}')" title="Ver tabela do Grupo ${jogo.grupo}">Grupo ${jogo.grupo}</div>
+      <div class="jogo-data-hora"><strong>${formatarData(jogo.data)}</strong> ${jogo.hora}</div>
+      <div class="placar-compacto">
+        <div class="selecao-padrao">
+          <img src="https://flagcdn.com/w40/${time1.codigo}.png" alt="${time1.nome}" title="${time1.nome}">
+        </div>
+        <div class="inputs-gols-mini">
+          <input type="number" min="0" value="${jogo.resultado.gols1}" class="input-gol-mini gol1" placeholder="0">
+          <span>x</span>
+          <input type="number" min="0" value="${jogo.resultado.gols2}" class="input-gol-mini gol2" placeholder="0">
+        </div>
+        <div class="selecao-padrao">
+          <img src="https://flagcdn.com/w40/${time2.codigo}.png" alt="${time2.nome}" title="${time2.nome}">
+        </div>
+      </div>
+      <div class="btn-edicao-mini">
+        <button class="btn-confirmar-mini" onclick="salvarEdicao(${jogoIndex})" title="Salvar">✓</button>
+        <button class="btn-cancelar-mini" onclick="cancelarEdicao(${jogoIndex})" title="Cancelar">✕</button>
+      </div>
+    </div>
+  `;
+}
+
+function salvarEdicao(jogoIndex) {
+  const jogoCard = document.getElementById(`jogo-${jogoIndex}`);
+  const novoGol1 = parseInt(jogoCard.querySelector(".gol1").value) || 0;
+  const novoGol2 = parseInt(jogoCard.querySelector(".gol2").value) || 0;
+
+  const jogo = jogos[jogoIndex];
+  if (!jogo || !jogo.resultado) return;
+
+  const time1 = grupos[jogo.grupo][jogo.time1];
+  const time2 = grupos[jogo.grupo][jogo.time2];
+
+  const gol1Antigo = jogo.resultado.gols1;
+  const gol2Antigo = jogo.resultado.gols2;
+
+  time1.gm -= gol1Antigo;
+  time1.gs -= gol2Antigo;
+  time2.gm -= gol2Antigo;
+  time2.gs -= gol1Antigo;
+
+  if (gol1Antigo > gol2Antigo) {
+    time1.vitorias--;
+    time2.derrotas--;
+    time1.pontos -= 3;
+  } else if (gol1Antigo < gol2Antigo) {
+    time2.vitorias--;
+    time1.derrotas--;
+    time2.pontos -= 3;
+  } else {
+    time1.empates--;
+    time2.empates--;
+    time1.pontos--;
+    time2.pontos--;
+  }
+
+  time1.gm += novoGol1;
+  time1.gs += novoGol2;
+  time1.saldo = time1.gm - time1.gs;
+  
+  time2.gm += novoGol2;
+  time2.gs += novoGol1;
+  time2.saldo = time2.gm - time2.gs;
+
+  if (novoGol1 > novoGol2) {
+    time1.vitorias++;
+    time2.derrotas++;
+    time1.pontos += 3;
+  } else if (novoGol1 < novoGol2) {
+    time2.vitorias++;
+    time1.derrotas++;
+    time2.pontos += 3;
+  } else {
+    time1.empates++;
+    time2.empates++;
+    time1.pontos++;
+    time2.pontos++;
+  }
+
+  jogo.resultado = { gols1: novoGol1, gols2: novoGol2 };
+  jogoEmEdicao = null;
+
+  atualizarTodasTabelas();
+  renderizarJogosDaRodada();
+  salvarDados();
+  mostrarNotificacao("Resultado atualizado com sucesso!", "sucesso");
+}
+
+function atualizarTodasTabelas() {
+  Object.keys(grupos).forEach(grupoId => {
+    atualizarTabela(grupoId);
+  });
+}
+
+function cancelarEdicao(jogoIndex) {
+  jogoEmEdicao = null;
+  renderizarJogosDaRodada();
+}
+
+function avancarRodada() {
+  if (rodadaAtual < 3) {
+    rodadaAtual++;
+    renderizarJogosDaRodada();
+  }
+}
+
+function retrocederRodada() {
+  if (rodadaAtual > 1) {
+    rodadaAtual--;
+    renderizarJogosDaRodada();
+  }
+}
+
+function mostrarNotificacao(mensagem, tipo = "info") {
+  const notif = document.createElement("div");
+  notif.className = `notificacao notificacao-${tipo}`;
+  notif.textContent = mensagem;
+  document.body.appendChild(notif);
+  
+  setTimeout(() => {
+    notif.classList.add("mostrar");
+  }, 10);
+  
+  setTimeout(() => {
+    notif.classList.remove("mostrar");
+    setTimeout(() => notif.remove(), 300);
+  }, 3000);
+}
+
+// ================== GUARDA LOCAL (LOCALSTORAGE) ==================
+function salvarDados() {
+  // Converte os objetos para texto (JSON) e guarda no navegador
+  localStorage.setItem("copa2026_grupos", JSON.stringify(grupos));
+  localStorage.setItem("copa2026_jogos", JSON.stringify(jogos));
+}
+
+function carregarDados() {
+  const gruposGuardados = localStorage.getItem("copa2026_grupos");
+  const jogosGuardados = localStorage.getItem("copa2026_jogos");
+
+  // Se houver dados guardados de visitas anteriores, substitui os dados vazios
+  if (gruposGuardados && jogosGuardados) {
+    grupos = JSON.parse(gruposGuardados);
+    jogos = JSON.parse(jogosGuardados);
+  }
+}
+
+function todosGruposConcluidos() {
+    const letras = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+    for (let letra of letras) {
+        if (!grupoConcluido(letra)) return false;
+    }
+    return true;
+}
+
+function calcularRanking(grupoId) {
+    const times = Object.values(grupos[grupoId]);
+    
+    times.sort((a, b) => {
+        // 1. Critério: Pontos
+        if (b.pontos !== a.pontos) return b.pontos - a.pontos;
+        
+        // 2. Critério: Confronto Direto
+        // Procuramos o jogo entre A e B nos dados de 'jogos'
+        const jogoConfronto = jogos.find(j => 
+            j.grupo === grupoId && 
+            ((j.time1 === a.codigo && j.time2 === b.codigo) || 
+             (j.time1 === b.codigo && j.time2 === a.codigo))
+        );
+
+        if (jogoConfronto && jogoConfronto.resultado) {
+            const golsA = jogoConfronto.time1 === a.codigo ? jogoConfronto.resultado.gols1 : jogoConfronto.resultado.gols2;
+            const golsB = jogoConfronto.time1 === b.codigo ? jogoConfronto.resultado.gols1 : jogoConfronto.resultado.gols2;
+            
+            if (golsA > golsB) return -1; // A venceu o confronto
+            if (golsB > golsA) return 1;  // B venceu o confronto
+            // Se empatou no confronto direto, segue para o próximo critério
+        }
+        
+        // 3. Critério: Saldo de Gols
+        if (b.saldo !== a.saldo) return b.saldo - a.saldo;
+        
+        // 4. Critério: Gols Marcados
+        return b.gm - a.gm;
+    });
+    
+    return times;
+}
+
+function obterTop8Terceiros() {
+    let terceiros = [];
+    const letras = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+    
+    for (let letra of letras) {
+        if (!grupos[letra]) continue;
+        
+        let times = Object.values(grupos[letra]);
+        if (times.length < 3) continue; // Trava de segurança: ignora grupos incompletos
+        
+        times.sort((a, b) => {
+            if (b.pontos !== a.pontos) return b.pontos - a.pontos;
+            if (b.saldo !== a.saldo) return b.saldo - a.saldo;
+            return b.gm - a.gm;
+        });
+        
+        let terceiro = times[2];
+        if (!terceiro) continue; // Garante que o terceiro colocado existe
+        
+        let partidasJogadas = (terceiro.vitorias || 0) + (terceiro.empates || 0) + (terceiro.derrotas || 0);
+        
+        if (partidasJogadas > 0) {
+            terceiros.push({ grupo: letra, time: terceiro });
+        }
+    }
+
+    terceiros.sort((a, b) => {
+        if (b.time.pontos !== a.time.pontos) return b.time.pontos - a.time.pontos;
+        if (b.time.saldo !== a.time.saldo) return b.time.saldo - a.time.saldo;
+        return b.time.gm - a.time.gm;
+    });
+
+    return terceiros.slice(0, 8);
+}
+
+function verificarSeMelhorTerceiro(codigoDoTime) {
+    const oitoMelhores = obterTop8Terceiros();
+    // Verifica se o código do time existe dentro do Top 8
+    return oitoMelhores.some(t => t.time.codigo === codigoDoTime);
+}
+
+function calcularMelhoresTerceiros() {
+    // 1. Pega a lista pronta da nossa função central!
+    const oitoMelhores = obterTop8Terceiros();
+
+    // 2. Regras de chaves 
+    const regrasAlocacao = [
+        { id: 74, letras: ["A","B","C","D","F"] },
+        { id: 77, letras: ["C","D","F","G","H"] },
+        { id: 79, letras: ["C","F","G","H","I","J"] },
+        { id: 80, letras: ["E","H","I","J","K"] }, 
+        { id: 81, letras: ["B","E","F","I","J"] },
+        { id: 82, letras: ["A","E","H","I","J"] },
+        { id: 86, letras: ["D","E","I","J","L"] },
+        { id: 87, letras: ["E","F","G","I","J"] }
+    ];
+
+    // 3. Algoritmo de encaixe
+    function alocarTimes(regras, disponiveis, index, resultadoAtual) {
+        if (index === regras.length) return resultadoAtual; 
+        
+        let regra = regras[index];
+        for (let i = 0; i < disponiveis.length; i++) {
+            let t = disponiveis[i];
+            
+            if (regra.letras.includes(t.grupo)) {
+                let novoResultado = { ...resultadoAtual, [regra.id]: t.time };
+                let novosDisponiveis = [...disponiveis];
+                novosDisponiveis.splice(i, 1);
+                
+                let tentativa = alocarTimes(regras, novosDisponiveis, index + 1, novoResultado);
+                if (tentativa) return tentativa;
+            }
+        }
+        return null; 
+    }
+
+    return alocarTimes(regrasAlocacao, oitoMelhores, 0, {}) || {};
+}
+
+function calcularMataMata() {
+    let terceirosColocados = [];
+    let primeiros = {};
+    let segundos = {};
+
+    // 1. Coleta os 1º, 2º e 3º de todos os grupos
+    Object.keys(grupos).forEach(grupoId => {
+        const ranking = calcularRanking(grupoId);
+        primeiros[grupoId] = ranking[0];
+        segundos[grupoId] = ranking[1];
+        
+        // Adiciona o 3º colocado à lista geral de terceiros
+        let terceiro = ranking[2];
+        terceiro.grupoOrigem = grupoId;
+        terceirosColocados.push(terceiro);
+    });
+
+    // 2. Ordena os terceiros pelo critério geral (Pontos > Saldo > Gols)
+    terceirosColocados.sort((a, b) => {
+        if (b.pontos !== a.pontos) return b.pontos - a.pontos;
+        if (b.saldo !== a.saldo) return b.saldo - a.saldo;
+        return b.gm - a.gm;
+    });
+
+    // 3. Pega os 8 melhores
+    const melhoresTerceiros = terceirosColocados.slice(0, 8);
+
+    // Agora você já tem os dados para montar os JOGOS 1 a 16.
+    // Exemplo para o Jogo 3 (1º C vs 2º F):
+    // const time1 = primeiros['C'];
+    // const time2 = segundos['F'];
+    
+    console.log("Ranking Finalizado. Primeiros:", primeiros, "Melhores Terceiros:", melhoresTerceiros);
+    // Aqui seguiremos com a montagem visual dos cards...
+}
+
+let faseAtual = 0; // 0 = Grupos, 1 = 16 Avos
+let nomesFases = [
+  "Fase de Grupos", 
+  "Segundas de final", 
+  "Oitavas de final", 
+  "Quartas de final", 
+  "Semifinal", 
+  "Decisão do 3º lugar", 
+  "Final"
+];
+
+function mudarFase(direcao) {
+    faseAtual += direcao;
+    
+    // Bloqueia navegação fora do limite
+    if (faseAtual < 0) faseAtual = 0;
+    if (faseAtual > nomesFases.length - 1) faseAtual = nomesFases.length - 1;
+
+    atualizarInterfaceFase();
+}
+
+function atualizarInterfaceFase() {
+    document.getElementById("faseTitulo").textContent = nomesFases[faseAtual];
+    document.getElementById("btnFaseAnterior").disabled = (faseAtual === 0);
+    document.getElementById("btnFaseProxima").disabled = (faseAtual === nomesFases.length - 1);
+    
+    const containerGrupos = document.getElementById("grupos");
+    const containerLateral = document.querySelector(".painel-lateral");
+    const mataMataSection = document.getElementById("faseMataMata");
+
+    if (faseAtual === 0) {
+        containerGrupos.style.display = "block";
+        containerLateral.style.display = "block";
+        if(mataMataSection) mataMataSection.style.display = "none";
+    } else {
+        containerGrupos.style.display = "none";
+        containerLateral.style.display = "none";
+        if(mataMataSection) {
+            mataMataSection.style.display = "block";
+            renderizarMataMata();
+        }
+    }
+}
+
+function traduzirMarcador(textoMarcador, idJogo = null, mapaTerceiros = null) {
+    const regexGrupo = /^(\d)°\s([A-L])$/;
+    const matchGrupo = textoMarcador.match(regexGrupo);
+    
+    if (matchGrupo) {
+        const posicao = parseInt(matchGrupo[1]); 
+        const grupoLetra = matchGrupo[2]; 
+        
+        if (!grupoConcluido(grupoLetra)) return { nome: textoMarcador, codigo: "" };
+        if (!grupos[grupoLetra]) return { nome: textoMarcador, codigo: "" };
+
+        let timesDoGrupo = Object.values(grupos[grupoLetra]);
+        timesDoGrupo.sort((a, b) => {
+            if (b.pontos !== a.pontos) return b.pontos - a.pontos; 
+            if (b.saldo !== a.saldo) return b.saldo - a.saldo;     
+            return b.gm - a.gm;                                    
+        });
+        
+        const timeClassificado = timesDoGrupo[posicao - 1]; 
+        if (timeClassificado) return { nome: timeClassificado.nome, codigo: timeClassificado.codigo };
+        
+        return { nome: textoMarcador, codigo: "" };
+    }
+
+    if (textoMarcador.startsWith("3°")) {
+        if (!todosGruposConcluidos() || !mapaTerceiros) {
+            return { nome: textoMarcador, codigo: "" };
+        }
+        if (idJogo && mapaTerceiros[idJogo]) {
+            const time = mapaTerceiros[idJogo];
+            return { nome: time.nome, codigo: time.codigo };
+        }
+        return { nome: textoMarcador, codigo: "" };
+    }
+
+    const regexVencedor = /^Venc\.\sJ(\d+)$/;
+    const matchVencedor = textoMarcador.match(regexVencedor);
+    if (matchVencedor) {
+        const idJogoVenc = matchVencedor[1];
+        if (resultadosMataMata && resultadosMataMata[idJogoVenc] && resultadosMataMata[idJogoVenc].vencedor) {
+            const v = resultadosMataMata[idJogoVenc].vencedor;
+            if (typeof v === 'string') return { nome: v, codigo: "" }; // Tratamento protetor para dados antigos do LocalStorage
+            return { nome: v.nome || "", codigo: v.codigo || "" };
+        }
+        return { nome: textoMarcador, codigo: "" };
+    }
+
+    const regexPerdedor = /^Perd\.\sJ(\d+)$/;
+    const matchPerdedor = textoMarcador.match(regexPerdedor);
+    if (matchPerdedor) {
+        const idJogoPerd = matchPerdedor[1];
+        if (resultadosMataMata && resultadosMataMata[idJogoPerd] && resultadosMataMata[idJogoPerd].perdedor) {
+            const p = resultadosMataMata[idJogoPerd].perdedor;
+            if (typeof p === 'string') return { nome: p, codigo: "" }; // Tratamento protetor para dados antigos
+            return { nome: p.nome || "", codigo: p.codigo || "" };
+        }
+        return { nome: textoMarcador, codigo: "" };
+    }
+    
+    return { nome: textoMarcador, codigo: "" };
+}
+
+function grupoConcluido(grupoLetra) {
+    // Verifica se o grupo existe no nosso cadastro
+    if (!grupos[grupoLetra]) return false;
+
+    let times = Object.values(grupos[grupoLetra]);
+    for (let time of times) {
+        let partidasJogadas = time.vitorias + time.empates + time.derrotas;
+        // Se algum time DESSE GRUPO tem menos de 3 jogos, o grupo ainda não acabou
+        if (partidasJogadas < 3) {
+            return false; 
+        }
+    }
+    // Se todos do grupo jogaram 3 partidas, este grupo específico está concluído!
+    return true;
+}
+
+// Função para renderizar os confrontos de mata-mata dependendo da fase atual
+function renderizarMataMata() {
+    const container = document.getElementById("chaveamentoContainer");
+    
+    if (container) {
+        container.innerHTML = ""; 
+    }
+
+    if (faseAtual === 0) return;
+
+    const nomeFaseAtual = nomesFases[faseAtual];
+    
+    const todosConfrontos = {
+        "Segundas de final": [
+            { id: 73, data: "28/06/2026", hora: "16:00", t1: "2° A", t2: "2° B" },
+            { id: 74, data: "29/06/2026", hora: "14:00", t1: "1° E", t2: "3° A,B,C,D,F" },
+            { id: 75, data: "29/06/2026", hora: "22:00", t1: "1° F", t2: "2° C" },
+            { id: 76, data: "29/06/2026", hora: "14:00", t1: "1° C", t2: "2° F" },
+            { id: 77, data: "30/06/2026", hora: "18:00", t1: "1° I", t2: "3° C,D,F,G,H" },
+            { id: 78, data: "30/06/2026", hora: "18:00", t1: "2° E", t2: "2° I" },
+            { id: 79, data: "30/06/2026", hora: "22:00", t1: "1° A", t2: "3° C,F,G,H,I,J" },
+            { id: 80, data: "30/06/2026", hora: "13:00", t1: "1° L", t2: "3° E,H,J,I,K" },
+            { id: 81, data: "01/07/2026", hora: "21:00", t1: "1° D", t2: "3° B,E,F,I,J" },
+            { id: 82, data: "01/07/2026", hora: "17:00", t1: "1° G", t2: "3° A,E,H,I,J" },
+            { id: 83, data: "02/07/2026", hora: "20:00", t1: "2° L", t2: "1° H" },
+            { id: 84, data: "02/07/2026", hora: "19:00", t1: "2° H", t2: "2° D" },
+            { id: 85, data: "03/07/2026", hora: "13:00", t1: "2° G", t2: "1° B" },
+            { id: 86, data: "07/07/2026", hora: "17:00", t1: "1° J", t2: "3° D,E,I,J,L" },
+            { id: 87, data: "07/07/2026", hora: "17:00", t1: "1° K", t2: "3° E,F,G,I,J" },
+            { id: 88, data: "03/07/2026", hora: "15:00", t1: "2° D", t2: "2° G" }
+        ],
+        "Oitavas de final": [
+            { id: 89, data: "04/07/2026", hora: "16:00", t1: "Venc. J73", t2: "Venc. J75" },
+            { id: 90, data: "04/07/2026", hora: "18:00", t1: "Venc. J74", t2: "Venc. J77" },
+            { id: 91, data: "05/07/2026", hora: "17:00", t1: "Venc. J76", t2: "Venc. J78" },
+            { id: 92, data: "05/07/2026", hora: "21:00", t1: "Venc. J79", t2: "Venc. J80" },
+            { id: 93, data: "06/07/2026", hora: "16:00", t1: "Venc. J83", t2: "Venc. J84" },
+            { id: 94, data: "06/07/2026", hora: "21:00", t1: "Venc. J81", t2: "Venc. J82" },
+            { id: 95, data: "07/07/2026", hora: "13:00", t1: "Venc. J86", t2: "Venc. J88" },
+            { id: 96, data: "07/07/2026", hora: "17:00", t1: "Venc. J85", t2: "Venc. J87" }
+        ],
+        "Quartas de final": [
+            { id: 97, data: "09/07/2026", hora: "17:00", t1: "Venc. J89", t2: "Venc. J90" },
+            { id: 98, data: "10/07/2026", hora: "16:00", t1: "Venc. J93", t2: "Venc. J94" },
+            { id: 99, data: "11/07/2026", hora: "13:00", t1: "Venc. J95", t2: "Venc. J96" },
+            { id: 100, data: "11/07/2026", hora: "17:00", t1: "Venc. J91", t2: "Venc. J92" }
+        ],
+        "Semifinal": [
+            { id: 101, data: "14/07/2026", hora: "16:00", t1: "Venc. J97", t2: "Venc. J99" },
+            { id: 102, data: "15/07/2026", hora: "16:00", t1: "Venc. J98", t2: "Venc. J100" }
+        ],
+        "Decisão do 3º lugar": [
+            { id: 103, data: "18/07/2026", hora: "18:00", t1: "Perd. J101", t2: "Perd. J102" }
+        ],
+        "Final": [
+            { id: 104, data: "19/07/2026", hora: "16:00", t1: "Venc. J101", t2: "Venc. J102" }
+        ]
+    };
+
+    const confrontosDaFase = todosConfrontos[nomeFaseAtual] || [];
+
+    let mapaTerceiros = null;
+    if (todosGruposConcluidos()) {
+        mapaTerceiros = calcularMelhoresTerceiros();
+    }
+
+    // 🚨 SEGURANÇA MÁXIMA: Só executa a injeção visual se o container existir no HTML
+    if (container) {
+        confrontosDaFase.forEach(jogo => {
+            const div = document.createElement("div");
+            div.className = "jogo-card"; 
+            
+            const objTime1 = traduzirMarcador(jogo.t1, jogo.id, mapaTerceiros);
+            const objTime2 = traduzirMarcador(jogo.t2, jogo.id, mapaTerceiros);
+            
+            const img1 = objTime1.codigo ? `<img src="https://flagcdn.com/32x24/${objTime1.codigo}.png" style="vertical-align: middle; margin-right: 5px; border-radius: 2px;">` : '';
+            const img2 = objTime2.codigo ? `<img src="https://flagcdn.com/32x24/${objTime2.codigo}.png" style="vertical-align: middle; margin-right: 5px; border-radius: 2px;">` : '';
+
+            const resultadoSalvo = resultadosMataMata[jogo.id];
+            const gol1 = resultadoSalvo ? resultadoSalvo.gols1 : '';
+            const gol2 = resultadoSalvo ? resultadoSalvo.gols2 : '';
+            
+            const pro1 = (resultadoSalvo && resultadoSalvo.pro1 !== null) ? resultadoSalvo.pro1 : '';
+            const pro2 = (resultadoSalvo && resultadoSalvo.pro2 !== null) ? resultadoSalvo.pro2 : '';
+            const pen1 = (resultadoSalvo && resultadoSalvo.pen1 !== null) ? resultadoSalvo.pen1 : '';
+            const pen2 = (resultadoSalvo && resultadoSalvo.pen2 !== null) ? resultadoSalvo.pen2 : '';
+
+            const inputsDesabilitados = resultadoSalvo ? 'disabled' : '';
+            const btnSalvarDisplay = resultadoSalvo ? 'none' : 'inline-block';
+            const btnEditarDisplay = resultadoSalvo ? 'inline-block' : 'none';
+
+            let displayPro = (resultadoSalvo && resultadoSalvo.pro1 !== null) ? 'block' : 'none';
+            let displayPen = (resultadoSalvo && resultadoSalvo.pen1 !== null) ? 'block' : 'none';
+
+            div.innerHTML = `
+              <div class="jogo-preenchimento-compacto match-card">
+                  <div class="match-info">
+                      <div class="grupo-badge">Jogo ${jogo.id}</div>
+                      <strong>${jogo.data}</strong><br>
+                      <span class="hora-jogo">${jogo.hora}</span>
+                  </div>
+
+                  <div class="placar-compacto match-teams mata-mata-mobile">
+                      <div class="selecao-padrao team home" style="font-weight: 600;">
+                          <span>${img1} ${objTime1.nome}</span>
+                          <input 
+                              type="number" 
+                              min="0" 
+                              class="input-gol-mini score-input" 
+                              id="gol1-jogo${jogo.id}" 
+                              value="${gol1}" 
+                              ${inputsDesabilitados} 
+                              placeholder="-"
+                          >
+                      </div>
+
+                      <div class="versus">x</div>
+
+                      <div class="selecao-padrao team away" style="font-weight: 600;">
+                          <input 
+                              type="number" 
+                              min="0" 
+                              class="input-gol-mini score-input" 
+                              id="gol2-jogo${jogo.id}" 
+                              value="${gol2}" 
+                              ${inputsDesabilitados} 
+                              placeholder="-"
+                          >
+                          <span>${img2} ${objTime2.nome}</span>
+                      </div>
+                  </div>
+
+                  <div id="div-pro-jogo${jogo.id}" class="tempo-extra" style="display: ${displayPro}; margin-top: 8px; text-align: center;">
+                      <span style="font-size: 0.7em; color: #ff9800; font-weight: bold; text-transform: uppercase;">Prorrogação</span><br>
+                      <input type="number" min="0" class="input-gol-mini" id="pro1-jogo${jogo.id}" value="${pro1}" ${inputsDesabilitados} placeholder="-">
+                      <span style="font-size: 0.8em;">x</span>
+                      <input type="number" min="0" class="input-gol-mini" id="pro2-jogo${jogo.id}" value="${pro2}" ${inputsDesabilitados} placeholder="-">
+                  </div>
+
+                  <div id="div-pen-jogo${jogo.id}" class="tempo-extra" style="display: ${displayPen}; margin-top: 8px; text-align: center;">
+                      <span style="font-size: 0.7em; color: #e91e63; font-weight: bold; text-transform: uppercase;">Pênaltis</span><br>
+                      <input type="number" min="0" class="input-gol-mini" id="pen1-jogo${jogo.id}" value="${pen1}" ${inputsDesabilitados} placeholder="-">
+                      <span style="font-size: 0.8em;">x</span>
+                      <input type="number" min="0" class="input-gol-mini" id="pen2-jogo${jogo.id}" value="${pen2}" ${inputsDesabilitados} placeholder="-">
+                  </div>
+
+                  <div class="acoes-jogo match-actions">
+                      <button 
+                          class="btn-confirmar btn-match btn-confirm" 
+                          id="btn-salvar-jogo${jogo.id}" 
+                          onclick="salvarJogoMataMata(${jogo.id}, '${objTime1.nome}', '${objTime1.codigo}', '${objTime2.nome}', '${objTime2.codigo}')" 
+                          style="display: ${btnSalvarDisplay};" 
+                          title="Confirmar"
+                      >
+                          ✓
+                      </button>
+
+                      <button 
+                          class="btn-editar btn-match btn-edit" 
+                          id="btn-editar-jogo${jogo.id}" 
+                          onclick="editarJogoMataMata(${jogo.id})" 
+                          style="display: ${btnEditarDisplay};" 
+                          title="Editar"
+                      >
+                          ✏️
+                      </button>
+                  </div>
+              </div>
+          `;
+            container.appendChild(div);
+        });
+    }
+}
+
+function salvarJogoMataMata(idJogo, nome1, codigo1, nome2, codigo2) {
+    const inputGols1 = document.getElementById(`gol1-jogo${idJogo}`).value;
+    const inputGols2 = document.getElementById(`gol2-jogo${idJogo}`).value;
+
+    if (inputGols1 === "" || inputGols2 === "") {
+        alert("Preencha o placar do tempo normal!"); return;
+    }
+
+    const gols1 = parseInt(inputGols1);
+    const gols2 = parseInt(inputGols2);
+
+    let pro1 = null, pro2 = null;
+    let pen1 = null, pen2 = null;
+
+    const divPro = document.getElementById(`div-pro-jogo${idJogo}`);
+    const divPen = document.getElementById(`div-pen-jogo${idJogo}`);
+
+    // ESTÁGIO 1: Empate no Tempo Normal
+    if (gols1 === gols2) {
+        if (divPro.style.display === "none") {
+            divPro.style.display = "block"; // Revela a prorrogação
+            return; // Interrompe o salvamento e espera o usuário preencher
+        } else {
+            const inputPro1 = document.getElementById(`pro1-jogo${idJogo}`).value;
+            const inputPro2 = document.getElementById(`pro2-jogo${idJogo}`).value;
+            
+            if (inputPro1 === "" || inputPro2 === "") {
+                alert("Preencha o placar da prorrogação!"); return;
+            }
+            pro1 = parseInt(inputPro1);
+            pro2 = parseInt(inputPro2);
+
+            // ESTÁGIO 2: Empate na Prorrogação
+            if (pro1 === pro2) {
+                if (divPen.style.display === "none") {
+                    divPen.style.display = "block"; // Revela os pênaltis
+                    return; 
+                } else {
+                    const inputPen1 = document.getElementById(`pen1-jogo${idJogo}`).value;
+                    const inputPen2 = document.getElementById(`pen2-jogo${idJogo}`).value;
+                    
+                    if (inputPen1 === "" || inputPen2 === "") {
+                        alert("Preencha o placar dos pênaltis!"); return;
+                    }
+                    pen1 = parseInt(inputPen1);
+                    pen2 = parseInt(inputPen2);
+
+                    if (pen1 === pen2) {
+                        alert("Disputa de pênaltis não pode terminar empatada!"); return;
+                    }
+                }
+            }
+        }
+    }
+
+    // Define o Vencedor analisando de trás pra frente (Penaltis -> Prorrogação -> Tempo Normal)
+    let vencedor = {}; let perdedor = {};
+    if (pen1 !== null && pen2 !== null && pen1 !== pen2) {
+        vencedor = pen1 > pen2 ? { nome: nome1, codigo: codigo1 } : { nome: nome2, codigo: codigo2 };
+        perdedor = pen1 > pen2 ? { nome: nome2, codigo: codigo2 } : { nome: nome1, codigo: codigo1 };
+    } else if (pro1 !== null && pro2 !== null && pro1 !== pro2) {
+        vencedor = pro1 > pro2 ? { nome: nome1, codigo: codigo1 } : { nome: nome2, codigo: codigo2 };
+        perdedor = pro1 > pro2 ? { nome: nome2, codigo: codigo2 } : { nome: nome1, codigo: codigo1 };
+    } else {
+        vencedor = gols1 > gols2 ? { nome: nome1, codigo: codigo1 } : { nome: nome2, codigo: codigo2 };
+        perdedor = gols1 > gols2 ? { nome: nome2, codigo: codigo2 } : { nome: nome1, codigo: codigo1 };
+    }
+
+    // Salva na memória global
+    resultadosMataMata[idJogo] = {
+        gols1: gols1, gols2: gols2,
+        pro1: pro1, pro2: pro2,
+        pen1: pen1, pen2: pen2,
+        vencedor: vencedor, perdedor: perdedor
+    };
+
+    // --- NOVA LÓGICA DE SALVAMENTO AUTOMÁTICO AQUI ---
+    localStorage.setItem('resultadosMataMata', JSON.stringify(resultadosMataMata));
+    renderizarResumoFinal();
+
+    // Desabilita os campos e troca os botões
+    const inputs = document.querySelectorAll(`#gol1-jogo${idJogo}, #gol2-jogo${idJogo}, #pro1-jogo${idJogo}, #pro2-jogo${idJogo}, #pen1-jogo${idJogo}, #pen2-jogo${idJogo}`);
+    inputs.forEach(input => { if(input) input.disabled = true; });
+
+    document.getElementById(`btn-salvar-jogo${idJogo}`).style.display = "none";
+    document.getElementById(`btn-editar-jogo${idJogo}`).style.display = "inline-block";
+}
+
+function editarJogoMataMata(idJogo) {
+    // Remove do objeto e do LocalStorage
+    delete resultadosMataMata[idJogo];
+    localStorage.setItem('resultadosMataMata', JSON.stringify(resultadosMataMata));
+    renderizarResumoFinal();
+
+    // Habilita e limpa os inputs principais
+    document.getElementById(`gol1-jogo${idJogo}`).disabled = false;
+    document.getElementById(`gol2-jogo${idJogo}`).disabled = false;
+    
+    // Esconde e zera os campos de prorrogação e pênaltis
+    document.getElementById(`div-pro-jogo${idJogo}`).style.display = "none";
+    document.getElementById(`pro1-jogo${idJogo}`).value = "";
+    document.getElementById(`pro2-jogo${idJogo}`).value = "";
+    document.getElementById(`pro1-jogo${idJogo}`).disabled = false;
+    document.getElementById(`pro2-jogo${idJogo}`).disabled = false;
+
+    document.getElementById(`div-pen-jogo${idJogo}`).style.display = "none";
+    document.getElementById(`pen1-jogo${idJogo}`).value = "";
+    document.getElementById(`pen2-jogo${idJogo}`).value = "";
+    document.getElementById(`pen1-jogo${idJogo}`).disabled = false;
+    document.getElementById(`pen2-jogo${idJogo}`).disabled = false;
+    
+    // Troca os botões
+    document.getElementById(`btn-salvar-jogo${idJogo}`).style.display = "inline-block";
+    document.getElementById(`btn-editar-jogo${idJogo}`).style.display = "none";
+}
+
+// ================== INICIALIZAÇÃO ==================
+document.addEventListener("DOMContentLoaded", function() {
+  carregarDados();
+  gerarTabelas();
+  renderizarJogosDaRodada();
+  document.getElementById("btnResetarTorneio")
+  ?.addEventListener("click", resetarTorneio);
+  
+  document.getElementById("btnRodadaProxima").addEventListener("click", avancarRodada);
+  document.getElementById("btnRodadaAnterior").addEventListener("click", retrocederRodada);
+});
+
+
+/* =========================================================
+   REVISÃO V2 - funções auxiliares e sobrescritas seguras
+   Mantém os dados originais, mas centraliza regras repetidas.
+   ========================================================= */
+const CONFIG_COPA_2026 = Object.freeze({
+  GRUPOS: ['A','B','C','D','E','F','G','H','I','J','K','L'],
+  CLASSIFICADOS_DIRETOS: 2,
+  MELHORES_TERCEIROS: 8,
+  RODADA_MIN: 1,
+  RODADA_MAX: 3
+});
+
+function obterTimeDoJogo(jogo, lado) {
+  if (!jogo || !grupos[jogo.grupo]) return null;
+  return grupos[jogo.grupo][lado === 1 ? jogo.time1 : jogo.time2] || null;
+}
+
+function lerPlacarDoCard(jogoIndex) {
+  const jogoCard = document.getElementById(`jogo-${jogoIndex}`);
+  if (!jogoCard) return null;
+  return {
+    gols1: Math.max(0, parseInt(jogoCard.querySelector('.gol1')?.value, 10) || 0),
+    gols2: Math.max(0, parseInt(jogoCard.querySelector('.gol2')?.value, 10) || 0)
+  };
+}
+
+function aplicarResultadoAosTimes(time1, time2, gols1, gols2, fator = 1) {
+  if (!time1 || !time2) return;
+
+  time1.gm += gols1 * fator;
+  time1.gs += gols2 * fator;
+  time2.gm += gols2 * fator;
+  time2.gs += gols1 * fator;
+
+  if (gols1 > gols2) {
+    time1.vitorias += fator;
+    time2.derrotas += fator;
+    time1.pontos += 3 * fator;
+  } else if (gols2 > gols1) {
+    time2.vitorias += fator;
+    time1.derrotas += fator;
+    time2.pontos += 3 * fator;
+  } else {
+    time1.empates += fator;
+    time2.empates += fator;
+    time1.pontos += fator;
+    time2.pontos += fator;
+  }
+
+  time1.saldo = time1.gm - time1.gs;
+  time2.saldo = time2.gm - time2.gs;
+}
+
+function compararTimes(a, b, grupoId = null) {
+  if (b.pontos !== a.pontos) return b.pontos - a.pontos;
+
+  if (grupoId) {
+    const confronto = jogos.find(j =>
+      j.grupo === grupoId && j.resultado &&
+      ((j.time1 === a.codigo && j.time2 === b.codigo) ||
+       (j.time1 === b.codigo && j.time2 === a.codigo))
+    );
+
+    if (confronto) {
+      const golsA = confronto.time1 === a.codigo ? confronto.resultado.gols1 : confronto.resultado.gols2;
+      const golsB = confronto.time1 === b.codigo ? confronto.resultado.gols1 : confronto.resultado.gols2;
+      if (golsA !== golsB) return golsB - golsA;
+    }
+  }
+
+  if (b.saldo !== a.saldo) return b.saldo - a.saldo;
+  if (b.gm !== a.gm) return b.gm - a.gm;
+  return a.nome.localeCompare(b.nome, 'pt-BR');
+}
+
+function calcularRanking(grupoId) {
+  return Object.values(grupos[grupoId] || {}).slice().sort((a, b) => compararTimes(a, b, grupoId));
+}
+
+function grupoConcluido(grupoLetra) {
+  return Object.values(grupos[grupoLetra] || {}).every(time => {
+    const partidas = (time.vitorias || 0) + (time.empates || 0) + (time.derrotas || 0);
+    return partidas >= 3;
+  });
+}
+
+function todosGruposConcluidos() {
+  return CONFIG_COPA_2026.GRUPOS.every(grupoConcluido);
+}
+
+function obterTop8Terceiros() {
+  const terceiros = CONFIG_COPA_2026.GRUPOS
+    .map(grupo => ({ grupo, time: calcularRanking(grupo)[2] }))
+    .filter(({ time }) => {
+      if (!time) return false;
+      const partidas = (time.vitorias || 0) + (time.empates || 0) + (time.derrotas || 0);
+      return partidas > 0;
+    })
+    .sort((a, b) => compararTimes(a.time, b.time));
+
+  return terceiros.slice(0, CONFIG_COPA_2026.MELHORES_TERCEIROS);
+}
+
+function verificarSeMelhorTerceiro(codigoDoTime) {
+  if (!todosGruposConcluidos()) return false;
+  return obterTop8Terceiros().some(({ time }) => time.codigo === codigoDoTime);
+}
+
+function confirmarResultado(jogoIndex) {
+  const placar = lerPlacarDoCard(jogoIndex);
+  const jogo = jogos[jogoIndex];
+  if (!placar || !jogo || jogo.resultado) return;
+
+  const time1 = obterTimeDoJogo(jogo, 1);
+  const time2 = obterTimeDoJogo(jogo, 2);
+  if (!time1 || !time2) return;
+
+  aplicarResultadoAosTimes(time1, time2, placar.gols1, placar.gols2, 1);
+  jogo.resultado = placar;
+
+  atualizarTabela(jogo.grupo);
+  renderizarJogosDaRodada();
+  salvarDados();
+  mostrarNotificacao(`Resultado de ${time1.nome} x ${time2.nome} registrado!`, 'sucesso');
+}
+
+function salvarEdicao(jogoIndex) {
+  const placar = lerPlacarDoCard(jogoIndex);
+  const jogo = jogos[jogoIndex];
+  if (!placar || !jogo || !jogo.resultado) return;
+
+  const time1 = obterTimeDoJogo(jogo, 1);
+  const time2 = obterTimeDoJogo(jogo, 2);
+  if (!time1 || !time2) return;
+
+  aplicarResultadoAosTimes(time1, time2, jogo.resultado.gols1, jogo.resultado.gols2, -1);
+  aplicarResultadoAosTimes(time1, time2, placar.gols1, placar.gols2, 1);
+  jogo.resultado = placar;
+  jogoEmEdicao = null;
+
+  atualizarTabela(jogo.grupo);
+  renderizarJogosDaRodada();
+  salvarDados();
+  mostrarNotificacao('Resultado atualizado com sucesso!', 'sucesso');
+}
+
+function avancarRodada() {
+  rodadaAtual = Math.min(CONFIG_COPA_2026.RODADA_MAX, rodadaAtual + 1);
+  renderizarJogosDaRodada();
+}
+
+function retrocederRodada() {
+  rodadaAtual = Math.max(CONFIG_COPA_2026.RODADA_MIN, rodadaAtual - 1);
+  renderizarJogosDaRodada();
+}
+
+function carregarDados() {
+  try {
+    const gruposGuardados = localStorage.getItem('copa2026_grupos');
+    const jogosGuardados = localStorage.getItem('copa2026_jogos');
+    const mataMataGuardado = localStorage.getItem('resultadosMataMata');
+
+    if (gruposGuardados && jogosGuardados) {
+      grupos = JSON.parse(gruposGuardados);
+      jogos = JSON.parse(jogosGuardados);
+    }
+
+    if (mataMataGuardado) {
+      resultadosMataMata = JSON.parse(mataMataGuardado);
+    }
+  } catch (erro) {
+    console.error('Erro ao carregar dados salvos. Usando estado inicial.', erro);
+  }
+}
+
+function salvarDados() {
+  try {
+    localStorage.setItem('copa2026_grupos', JSON.stringify(grupos));
+    localStorage.setItem('copa2026_jogos', JSON.stringify(jogos));
+    localStorage.setItem('resultadosMataMata', JSON.stringify(resultadosMataMata));
+  } catch (erro) {
+    console.error('Erro ao salvar dados.', erro);
+    mostrarNotificacao('Não foi possível salvar os dados no navegador.', 'erro');
+  }
+}
+
+function atualizarInterfaceFase() {
+  const titulo = document.getElementById('faseTitulo');
+  const btnAnterior = document.getElementById('btnFaseAnterior');
+  const btnProxima = document.getElementById('btnFaseProxima');
+  const containerGrupos = document.getElementById('grupos');
+  const containerLateral = document.querySelector('.painel-lateral');
+  const mataMataSection = document.getElementById('faseMataMata');
+
+  if (titulo) titulo.textContent = nomesFases[faseAtual];
+  if (btnAnterior) btnAnterior.disabled = faseAtual === 0;
+  if (btnProxima) btnProxima.disabled = faseAtual === nomesFases.length - 1;
+
+  const naFaseDeGrupos = faseAtual === 0;
+  if (containerGrupos) containerGrupos.style.display = naFaseDeGrupos ? 'block' : 'none';
+  if (containerLateral) containerLateral.style.display = naFaseDeGrupos ? 'block' : 'none';
+
+  if (mataMataSection) {
+    mataMataSection.hidden = naFaseDeGrupos;
+    mataMataSection.style.display = naFaseDeGrupos ? 'none' : 'block';
+  }
+
+  if (!naFaseDeGrupos) renderizarMataMata();
+}
+
+function mudarFase(direcao) {
+  faseAtual = Math.max(0, Math.min(nomesFases.length - 1, faseAtual + direcao));
+  atualizarInterfaceFase();
+}
+
+function resetarTorneio() {
+  
+  const confirmar = confirm("Tem certeza que deseja resetar todo o torneio? Todos os resultados serão apagados.");
+
+  if (!confirmar) return;
+
+  localStorage.removeItem("copa2026_grupos");
+  localStorage.removeItem("copa2026_jogos");
+  localStorage.removeItem("resultadosMataMata");
+  confeteCampeaoExibido = false;
+
+
+  location.reload();
+  renderizarResumoFinal();
+}
+
+function renderizarResumoFinal() {
+  const resumo = document.getElementById("resumoFinal");
+  if (!resumo) return;
+
+  const final = resultadosMataMata[104];
+  const terceiroLugar = resultadosMataMata[103];
+
+  if (!final || !final.vencedor) {
+    resumo.style.display = "none";
+    return;
+  }
+
+  const campeao = final.vencedor;
+  const vice = final.perdedor;
+  const terceiro = terceiroLugar?.vencedor;
+  const quarto = terceiroLugar?.perdedor;
+
+  const bandeira = (time) =>
+    time?.codigo
+      ? `<img src="https://flagcdn.com/w80/${time.codigo}.png" alt="${time.nome}">`
+      : "";
+
+  resumo.innerHTML = `
+    <div class="trofeu-final">🏆</div>
+
+    <p class="rotulo-campeao">Campeão</p>
+
+    <div class="campeao-destaque">
+      ${bandeira(campeao)}
+      <strong>${campeao.nome}</strong>
+    </div>
+    
+    <div class="podio-final">
+      <div class="podio-card vice">
+        <span class="medalha">🥈</span>
+        ${bandeira(vice)}
+        <div>
+          <small>Vice-campeão</small>
+          <strong>${vice?.nome || "Não definido"}</strong>
+        </div>
+    </div>
+
+    <div class="podio-card terceiro">
+      <span class="medalha">🥉</span>
+      ${bandeira(terceiro)}
+      <div>
+        <small>3º lugar</small>
+        <strong>${terceiro?.nome || "Não definido"}</strong>
+      </div>
+    </div>
+
+    <div class="podio-card quarto">
+      <span class="medalha">4º</span>
+      ${bandeira(quarto)}
+      <div>
+        <small>4º lugar</small>
+        <strong>${quarto?.nome || "Não definido"}</strong>
+      </div>
+    </div>
+    </div>
+  `;
+
+  resumo.style.display = "block";
+
+  if (!confeteCampeaoExibido) {
+    celebrarCampeao();
+    confeteCampeaoExibido = true;
+  }
+}
+
+function celebrarCampeao() {
+    if (typeof confetti !== "function") return;
+    const duracao = 4000;
+    const fim = Date.now() + duracao;
+
+    (function frame() {
+        confetti({
+            particleCount: 5,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 }
+        });
+
+        confetti({
+            particleCount: 5,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 }
+        });
+
+        if (Date.now() < fim) {
+            requestAnimationFrame(frame);
+        }
+    })();
+}
