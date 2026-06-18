@@ -570,7 +570,7 @@ function calcularRanking(grupoId) {
         if (b.pontos !== a.pontos) return b.pontos - a.pontos;
         
         // 2. Critério: Confronto Direto
-        // Procuramos o jogo entre A e B nos dados de 'jogos'
+        // Procura o jogo entre A e B nos dados de 'jogos'
         const jogoConfronto = jogos.find(j => 
             j.grupo === grupoId && 
             ((j.time1 === a.codigo && j.time2 === b.codigo) || 
@@ -703,13 +703,9 @@ function calcularMataMata() {
     // 3. Pega os 8 melhores
     const melhoresTerceiros = terceirosColocados.slice(0, 8);
 
-    // Agora você já tem os dados para montar os JOGOS 1 a 16.
-    // Exemplo para o Jogo 3 (1º C vs 2º F):
-    // const time1 = primeiros['C'];
-    // const time2 = segundos['F'];
-    
+      
     console.log("Ranking Finalizado. Primeiros:", primeiros, "Melhores Terceiros:", melhoresTerceiros);
-    // Aqui seguiremos com a montagem visual dos cards...
+    
 }
 
 let faseAtual = 0; // 0 = Grupos, 1 = 16 Avos
@@ -819,18 +815,18 @@ function traduzirMarcador(textoMarcador, idJogo = null, mapaTerceiros = null) {
 }
 
 function grupoConcluido(grupoLetra) {
-    // Verifica se o grupo existe no nosso cadastro
+    // Verifica se o grupo existe no cadastro
     if (!grupos[grupoLetra]) return false;
 
     let times = Object.values(grupos[grupoLetra]);
     for (let time of times) {
         let partidasJogadas = time.vitorias + time.empates + time.derrotas;
-        // Se algum time DESSE GRUPO tem menos de 3 jogos, o grupo ainda não acabou
+        
         if (partidasJogadas < 3) {
             return false; 
         }
     }
-    // Se todos do grupo jogaram 3 partidas, este grupo específico está concluído!
+    
     return true;
 }
 
@@ -1084,7 +1080,6 @@ function salvarJogoMataMata(idJogo, nome1, codigo1, nome2, codigo2) {
         vencedor: vencedor, perdedor: perdedor
     };
 
-    // --- NOVA LÓGICA DE SALVAMENTO AUTOMÁTICO AQUI ---
     localStorage.setItem('resultadosMataMata', JSON.stringify(resultadosMataMata));
     renderizarResumoFinal();
 
@@ -1326,11 +1321,6 @@ document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("btnRodadaAnterior").addEventListener("click", retrocederRodada);
 });
 
-
-/* =========================================================
-   REVISÃO V2 - funções auxiliares e sobrescritas seguras
-   Mantém os dados originais, mas centraliza regras repetidas.
-   ========================================================= */
 const CONFIG_COPA_2026 = Object.freeze({
   GRUPOS: ['A','B','C','D','E','F','G','H','I','J','K','L'],
   CLASSIFICADOS_DIRETOS: 2,
