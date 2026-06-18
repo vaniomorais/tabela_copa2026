@@ -11,3 +11,4 @@ Funcionalidades:
 - limpa resultados preenchidos
 - modo escuro
 - Responsividade aprimorada
+- Possibilidade de instalação no computador e dispositivos móveis, via PWA, funcionando como um app.
