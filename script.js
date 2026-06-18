@@ -575,7 +575,7 @@ function calcularRanking(grupoId) {
         if (b.pontos !== a.pontos) return b.pontos - a.pontos;
         
         // 2. Critério: Confronto Direto
-        // Procuramos o jogo entre A e B nos dados de 'jogos'
+        // Procura o jogo entre A e B nos dados de 'jogos'
         const jogoConfronto = jogos.find(j => 
             j.grupo === grupoId && 
             ((j.time1 === a.codigo && j.time2 === b.codigo) || 
@@ -708,13 +708,9 @@ function calcularMataMata() {
     // 3. Pega os 8 melhores
     const melhoresTerceiros = terceirosColocados.slice(0, 8);
 
-    // Agora você já tem os dados para montar os JOGOS 1 a 16.
-    // Exemplo para o Jogo 3 (1º C vs 2º F):
-    // const time1 = primeiros['C'];
-    // const time2 = segundos['F'];
-    
+      
     console.log("Ranking Finalizado. Primeiros:", primeiros, "Melhores Terceiros:", melhoresTerceiros);
-    // Aqui seguiremos com a montagem visual dos cards...
+    
 }
 
 let faseAtual = 0; // 0 = Grupos, 1 = 16 Avos
@@ -824,18 +820,18 @@ function traduzirMarcador(textoMarcador, idJogo = null, mapaTerceiros = null) {
 }
 
 function grupoConcluido(grupoLetra) {
-    // Verifica se o grupo existe no nosso cadastro
+    // Verifica se o grupo existe no cadastro
     if (!grupos[grupoLetra]) return false;
 
     let times = Object.values(grupos[grupoLetra]);
     for (let time of times) {
         let partidasJogadas = time.vitorias + time.empates + time.derrotas;
-        // Se algum time DESSE GRUPO tem menos de 3 jogos, o grupo ainda não acabou
+        
         if (partidasJogadas < 3) {
             return false; 
         }
     }
-    // Se todos do grupo jogaram 3 partidas, este grupo específico está concluído!
+    
     return true;
 }
 
@@ -1089,7 +1085,6 @@ function salvarJogoMataMata(idJogo, nome1, codigo1, nome2, codigo2) {
         vencedor: vencedor, perdedor: perdedor
     };
 
-    // --- NOVA LÓGICA DE SALVAMENTO AUTOMÁTICO AQUI ---
     localStorage.setItem('resultadosMataMata', JSON.stringify(resultadosMataMata));
     renderizarResumoFinal();
 
@@ -1129,11 +1124,201 @@ function editarJogoMataMata(idJogo) {
     document.getElementById(`btn-editar-jogo${idJogo}`).style.display = "none";
 }
 
+function obterDataHojeISO() {
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+  const dia = String(hoje.getDate()).padStart(2, "0");
+
+  return `${ano}-${mes}-${dia}`;
+}
+
+function encontrarPrimeiroJogoDeHoje() {
+  const hojeISO = obterDataHojeISO();
+
+  return jogos
+    .map((jogo, index) => ({ ...jogo, jogoIndex: index }))
+    .filter(jogo => jogo.data === hojeISO)
+    .sort((a, b) => {
+      const dataA = new Date(`${a.data}T${a.hora}`);
+      const dataB = new Date(`${b.data}T${b.hora}`);
+      return dataA - dataB;
+    })[0];
+}
+
+function abrirRodadaDoJogoDeHoje() {
+  const jogoHoje = encontrarPrimeiroJogoDeHoje();
+
+  if (!jogoHoje) return;
+
+  rodadaAtual = jogoHoje.rodada;
+  renderizarJogosDaRodada();
+
+  setTimeout(() => {
+    const cardJogo = document.getElementById(`jogo-${jogoHoje.jogoIndex}`);
+    const painelJogos = document.querySelector(".painel-lateral");
+
+    if (!cardJogo || !painelJogos) return;
+
+    cardJogo.classList.add("jogo-hoje");
+
+    painelJogos.scrollTo({
+      top: cardJogo.offsetTop - painelJogos.offsetTop - 12,
+      behavior: "smooth"
+    });
+  }, 150);
+}
+
+function exportarBackup() {
+  const dadosBackup = {
+    versao: "1.0",
+    dataExportacao: new Date().toISOString(),
+    grupos,
+    jogos,
+    resultadosMataMata,
+    rodadaAtual
+  };
+
+  const conteudo = JSON.stringify(dadosBackup, null, 2);
+  const blob = new Blob([conteudo], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "copa2026_backup.json";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(url);
+
+  mostrarNotificacao("Backup exportado com sucesso!", "sucesso");
+}
+
+function importarBackup(event) {
+    const arquivo = event.target.files[0];
+
+    if (!arquivo) return;
+
+    const leitor = new FileReader();
+
+    leitor.onload = function(e) {
+        try {
+            const dados = JSON.parse(e.target.result);
+
+            if (!dados.grupos || !dados.jogos) {
+                throw new Error("Backup inválido");
+            }
+
+            grupos = dados.grupos;
+            jogos = dados.jogos;
+
+            resultadosMataMata =
+                dados.resultadosMataMata || {};
+
+            rodadaAtual =
+                dados.rodadaAtual || 1;
+
+            localStorage.setItem(
+                "resultadosMataMata",
+                JSON.stringify(resultadosMataMata)
+            );
+
+            salvarDados();
+
+            gerarTabelas();
+            renderizarJogosDaRodada();
+
+            mostrarNotificacao(
+                "Backup restaurado com sucesso!",
+                "sucesso"
+            );
+
+        } catch (erro) {
+            console.error(erro);
+
+            mostrarNotificacao(
+                "Arquivo de backup inválido.",
+                "erro"
+            );
+        }
+    };
+
+    leitor.readAsText(arquivo);
+}
+
+function aplicarTemaSalvo() {
+  try {
+    const temaSalvo = localStorage.getItem("temaCopa2026");
+
+    if (temaSalvo === "escuro") {
+      document.body.classList.add("dark-mode");
+    } else if (temaSalvo === "claro") {
+      document.body.classList.remove("dark-mode");
+    } else if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      document.body.classList.add("dark-mode");
+    }
+
+    atualizarTextoBotaoTema();
+  } catch (erro) {
+    console.error("Erro ao aplicar tema salvo:", erro);
+  }
+}
+
+function alternarTema() {
+  document.body.classList.toggle("dark-mode");
+
+  const temaAtual = document.body.classList.contains("dark-mode")
+    ? "escuro"
+    : "claro";
+
+  localStorage.setItem("temaCopa2026", temaAtual);
+  atualizarTextoBotaoTema();
+}
+
+function atualizarTextoBotaoTema() {
+  const btnTema = document.getElementById("btnAlternarTema");
+  if (!btnTema) return;
+
+  btnTema.textContent = document.body.classList.contains("dark-mode")
+    ? "☀️ Modo claro"
+    : "🌙 Modo escuro";
+}
+
+function alternarTema() {
+    document.body.classList.toggle("dark-mode");
+
+    const temaAtual = document.body.classList.contains("dark-mode")
+        ? "escuro"
+        : "claro";
+
+    localStorage.setItem("temaCopa2026", temaAtual);
+
+    atualizarTextoBotaoTema();
+}
+
+function atualizarTextoBotaoTema() {
+    const btnTema = document.getElementById("btnAlternarTema");
+
+    if (!btnTema) return;
+
+    btnTema.textContent = document.body.classList.contains("dark-mode")
+        ? "☀️ Modo claro"
+        : "🌙 Modo escuro";
+}
+
 // ================== INICIALIZAÇÃO ==================
 document.addEventListener("DOMContentLoaded", function() {
   carregarDados();
+  aplicarTemaSalvo();
+  
   gerarTabelas();
   renderizarJogosDaRodada();
+  abrirRodadaDoJogoDeHoje();
+
   document.getElementById("btnResetarTorneio")
   ?.addEventListener("click", resetarTorneio);
   
@@ -1141,11 +1326,6 @@ document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("btnRodadaAnterior").addEventListener("click", retrocederRodada);
 });
 
-
-/* =========================================================
-   REVISÃO V2 - funções auxiliares e sobrescritas seguras
-   Mantém os dados originais, mas centraliza regras repetidas.
-   ========================================================= */
 const CONFIG_COPA_2026 = Object.freeze({
   GRUPOS: ['A','B','C','D','E','F','G','H','I','J','K','L'],
   CLASSIFICADOS_DIRETOS: 2,
@@ -1153,6 +1333,50 @@ const CONFIG_COPA_2026 = Object.freeze({
   RODADA_MIN: 1,
   RODADA_MAX: 3
 });
+
+const btnExportarDados = document.getElementById("btnExportarDados");
+const btnImportarDados =
+    document.getElementById("btnImportarDados");
+
+const inputImportarBackup =
+    document.getElementById("inputImportarBackup");
+
+if (btnImportarDados && inputImportarBackup) {
+
+    btnImportarDados.addEventListener("click", () => {
+        inputImportarBackup.click();
+    });
+
+    inputImportarBackup.addEventListener(
+        "change",
+        importarBackup
+    );
+}
+if (btnExportarDados) {
+  btnExportarDados.addEventListener("click", exportarBackup);
+}
+const btnMenuApp = document.getElementById("btnMenuApp");
+const opcoesMenuApp = document.getElementById("opcoesMenuApp");
+
+if (btnMenuApp && opcoesMenuApp) {
+  btnMenuApp.addEventListener("click", (event) => {
+    event.stopPropagation();
+    opcoesMenuApp.classList.toggle("ativo");
+  });
+
+  document.addEventListener("click", () => {
+    opcoesMenuApp.classList.remove("ativo");
+  });
+
+  opcoesMenuApp.addEventListener("click", () => {
+    opcoesMenuApp.classList.remove("ativo");
+  });
+}
+
+  const btnAlternarTema = document.getElementById("btnAlternarTema");
+if (btnAlternarTema) {
+    btnAlternarTema.addEventListener("click", alternarTema);
+}
 
 function obterTimeDoJogo(jogo, lado) {
   if (!jogo || !grupos[jogo.grupo]) return null;

@@ -17,8 +17,24 @@
     <div class="header-content">
       <h1>⚽ Copa do Mundo 2026</h1>
       <p>Acompanhe os jogos, registre resultados e visualize o chaveamento.</p>
-      <div class="acoes-app">
-        <button id="btnResetarTorneio" class="btn-resetar">Limpar resultados</button>
+      <div class="menu-app">
+        <button id="btnMenuApp" class="btn-menu-app" aria-label="Abrir menu de opções">
+          ☰
+        </button>
+
+        <div id="opcoesMenuApp" class="opcoes-menu-app">
+            <button id="btnExportarDados" type="button">📤 Exportar backup</button>
+            <button id="btnImportarDados" type="button">📥 Importar backup</button>
+            <button id="btnAlternarTema" type="button">🌙 Modo escuro</button>
+            <button id="btnResetarTorneio" type="button" class="opcao-perigo">🗑️ Limpar resultados</button>
+
+            <input
+                type="file"
+                id="inputImportarBackup"
+                accept=".json"
+                style="display:none;"
+            >
+        </div>
       </div>
     </div>
   </header>
