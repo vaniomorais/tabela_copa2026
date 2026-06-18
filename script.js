@@ -390,8 +390,12 @@ function confirmarResultado(jogoIndex) {
 
   atualizarTodasTabelas();
   renderizarJogosDaRodada();
-  salvarDados();
-  mostrarNotificacao(`Resultado de ${time1.nome} x ${time2.nome} registrado!`, "sucesso");
+  if (salvarDados()) {
+    mostrarNotificacao(
+        `Resultado de ${time1.nome} x ${time2.nome} registrado!`,
+        'sucesso'
+    );
+  }
 }
 
 function iniciarEdicao(jogoIndex) {
@@ -491,8 +495,9 @@ function salvarEdicao(jogoIndex) {
 
   atualizarTodasTabelas();
   renderizarJogosDaRodada();
-  salvarDados();
-  mostrarNotificacao("Resultado atualizado com sucesso!", "sucesso");
+  if (salvarDados()) {
+    mostrarNotificacao("Resultado atualizado com sucesso!", "sucesso");
+  }
 }
 
 function atualizarTodasTabelas() {
@@ -1317,9 +1322,12 @@ function salvarDados() {
     localStorage.setItem('copa2026_grupos', JSON.stringify(grupos));
     localStorage.setItem('copa2026_jogos', JSON.stringify(jogos));
     localStorage.setItem('resultadosMataMata', JSON.stringify(resultadosMataMata));
+
+    return true;
   } catch (erro) {
     console.error('Erro ao salvar dados.', erro);
     mostrarNotificacao('Não foi possível salvar os dados no navegador.', 'erro');
+    return false;
   }
 }
 
