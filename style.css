@@ -81,6 +81,8 @@ input:focus-visible {
   box-shadow: var(--sombra-card);
   backdrop-filter: blur(12px);
   animation: slideDown .35s ease-out;
+  position: relative;
+  z-index: 1000;
 }
 
 .header-content {
@@ -110,6 +112,8 @@ input:focus-visible {
   border-radius: var(--raio);
   background: rgba(255, 255, 255, .78);
   box-shadow: var(--sombra-leve);
+  position: relative;
+  z-index: 1;
 }
 
 .fase-controle h2,
@@ -1367,7 +1371,7 @@ h3.grupo-titulo {
   height: 40px;
   border: none;
   border-radius: 10px;
-  background-color: #d7e3f3;
+  background-color: #c2b5f2;
   color: #585757;
   font-size: 1.35rem;
   font-weight: 900;
@@ -1378,7 +1382,7 @@ h3.grupo-titulo {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  z-index: 50;
+  z-index: 1001;
   min-width: 190px;
   padding: 8px;
   border-radius: 14px;
