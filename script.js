@@ -715,7 +715,7 @@ function calcularMataMata() {
 let faseAtual = 0; // 0 = Grupos, 1 = 16 Avos
 let nomesFases = [
   "Fase de Grupos", 
-  "Segundas de final", 
+  "16-avos de final", 
   "Oitavas de final", 
   "Quartas de final", 
   "Semifinal", 
