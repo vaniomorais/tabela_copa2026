@@ -715,7 +715,7 @@ function calcularMataMata() {
 let faseAtual = 0; // 0 = Grupos, 1 = 16 Avos
 let nomesFases = [
   "Fase de Grupos", 
-  "16-avos de final", 
+  "16 Avos de final", 
   "Oitavas de final", 
   "Quartas de final", 
   "Semifinal", 
@@ -847,7 +847,7 @@ function renderizarMataMata() {
     const nomeFaseAtual = nomesFases[faseAtual];
     
     const todosConfrontos = {
-        "Segundas de final": [
+        "16 Avos de final": [
             { id: 73, data: "28/06/2026", hora: "16:00", t1: "2° A", t2: "2° B" },
             { id: 74, data: "29/06/2026", hora: "14:00", t1: "1° E", t2: "3° A,B,C,D,F" },
             { id: 75, data: "29/06/2026", hora: "22:00", t1: "1° F", t2: "2° C" },
