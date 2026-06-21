@@ -1496,3 +1496,66 @@ body.dark-mode .grid-mata-mata {
 body.dark-mode .grid-mata-mata .jogo-card {
   background: #0f172a;
 }
+
+.pagina-resultados {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.cabecalho-resultados {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.cabecalho-resultados h1 {
+    color: var(--cor-primaria);
+    font-size: 2.4rem;
+    margin-bottom: 10px;
+}
+
+.cabecalho-resultados p {
+    color: var(--cor-texto-suave);
+    font-size: 1.1rem;
+}
+
+.cards-fontes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.card-fonte {
+    text-decoration: none;
+    color: inherit;
+
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+
+    text-align: center;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+
+    transition: all .25s ease;
+}
+
+.card-fonte:hover {
+    transform: translateY(-5px);
+
+    box-shadow: 0 18px 40px rgba(79,70,229,.20);
+}
+
+.icone-fonte {
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.card-fonte h2 {
+    color: var(--cor-primaria);
+    margin-bottom: 10px;
+}
+
+.card-fonte p {
+    color: var(--cor-texto-suave);
+}

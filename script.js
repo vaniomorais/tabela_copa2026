@@ -1340,8 +1340,12 @@ const CONFIG_COPA_2026 = Object.freeze({
 });
 
 const btnExportarDados = document.getElementById("btnExportarDados");
-const btnImportarDados =
-    document.getElementById("btnImportarDados");
+const btnImportarDados = document.getElementById("btnImportarDados");
+const btnConsultarResultados = document.getElementById("btnConsultarResultados");
+
+if (btnConsultarResultados) {
+    btnConsultarResultados.addEventListener("click", consultarResultados);
+}
 
 const inputImportarBackup =
     document.getElementById("inputImportarBackup");
@@ -1696,4 +1700,11 @@ function celebrarCampeao() {
             requestAnimationFrame(frame);
         }
     })();
+}
+
+function consultarResultados() {
+    window.open(
+        "resultados.html",
+        "_blank"
+    );
 }
