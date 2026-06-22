@@ -904,7 +904,10 @@ function renderizarMataMata() {
     if (container) {
         confrontosDaFase.forEach(jogo => {
             const div = document.createElement("div");
-            div.className = "jogo-card"; 
+
+            const resultadoSalvo = resultadosMataMata[jogo.id];
+
+            div.className = `jogo-card ${resultadoSalvo ? "realizado" : ""}`; 
             
             const objTime1 = traduzirMarcador(jogo.t1, jogo.id, mapaTerceiros);
             const objTime2 = traduzirMarcador(jogo.t2, jogo.id, mapaTerceiros);
@@ -912,7 +915,6 @@ function renderizarMataMata() {
             const img1 = objTime1.codigo ? `<img src="https://flagcdn.com/32x24/${objTime1.codigo}.png" style="vertical-align: middle; margin-right: 5px; border-radius: 2px;">` : '';
             const img2 = objTime2.codigo ? `<img src="https://flagcdn.com/32x24/${objTime2.codigo}.png" style="vertical-align: middle; margin-right: 5px; border-radius: 2px;">` : '';
 
-            const resultadoSalvo = resultadosMataMata[jogo.id];
             const gol1 = resultadoSalvo ? resultadoSalvo.gols1 : '';
             const gol2 = resultadoSalvo ? resultadoSalvo.gols2 : '';
             
@@ -1083,6 +1085,8 @@ function salvarJogoMataMata(idJogo, nome1, codigo1, nome2, codigo2) {
         pen1: pen1, pen2: pen2,
         vencedor: vencedor, perdedor: perdedor
     };
+
+    renderizarMataMata();
 
     // --- NOVA LÓGICA DE SALVAMENTO AUTOMÁTICO AQUI ---
     localStorage.setItem('resultadosMataMata', JSON.stringify(resultadosMataMata));

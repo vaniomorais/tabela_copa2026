@@ -939,7 +939,7 @@ h3.grupo-titulo {
 
 /* PADRÃO ÚNICO PARA TODOS OS JOGOS */
 .match-card {
-  background: #ffffff;
+  background: transparent;
   border-radius: 12px;
   padding: 12px;
   margin-bottom: 12px;
@@ -1466,7 +1466,7 @@ body.dark-mode .jogo-card.realizado {
 }
 
 body.dark-mode .placar-compacto {
-  background: #111827;
+  background: #0b0d13;
 }
 
 body.dark-mode .input-gol-mini {
@@ -1490,11 +1490,16 @@ body.dark-mode .resumo-final {
 }
 
 body.dark-mode .grid-mata-mata {
-  background: #020617;
+  background: #10152b;
 }
 
 body.dark-mode .grid-mata-mata .jogo-card {
   background: #0f172a;
+}
+
+body.dark-mode .grid-mata-mata .jogo-card.realizado {
+  background: rgba(22, 101, 52, 0.22);
+  border-color: rgba(34, 197, 94, 0.45);
 }
 
 .pagina-resultados {
