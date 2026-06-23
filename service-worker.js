@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tabela-copa-v2.4';
+const CACHE_NAME = 'tabela-copa-v2.5';
 
 const FILES_TO_CACHE = [
     './',
