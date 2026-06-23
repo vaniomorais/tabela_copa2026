@@ -705,8 +705,24 @@ function traduzirMarcador(textoMarcador, idJogo = null, mapaTerceiros = null) {
         const posicao = parseInt(matchGrupo[1]); 
         const grupoLetra = matchGrupo[2]; 
         
-        if (!grupoConcluido(grupoLetra)) return { nome: textoMarcador, codigo: "" };
         if (!grupos[grupoLetra]) return { nome: textoMarcador, codigo: "" };
+
+        // Se é primeiro colocado, verifica se está garantido (mesmo sem grupo concluir)
+        if (posicao === 1) {
+            const primeirGarantido = primeiroGarantido(grupoLetra);
+            if (primeirGarantido) {
+                return { nome: primeirGarantido.nome, codigo: primeirGarantido.codigo };
+            }
+            // Se não está garantido, aguarda conclusão do grupo
+            if (!grupoConcluido(grupoLetra)) {
+                return { nome: textoMarcador, codigo: "" };
+            }
+        } else {
+            // Para 2°, 3°, 4° precisa grupo concluído
+            if (!grupoConcluido(grupoLetra)) {
+                return { nome: textoMarcador, codigo: "" };
+            }
+        }
 
         let timesDoGrupo = Object.values(grupos[grupoLetra]);
         timesDoGrupo.sort((a, b) => {
@@ -774,6 +790,104 @@ function grupoConcluido(grupoLetra) {
     }
     // Se todos do grupo jogaram 3 partidas, este grupo específico está concluído!
     return true;
+}
+
+function primeiroGarantido(grupoLetra) {
+    // FUNCAO: Verifica se o primeiro colocado já garantiu matematicamente a primeira posição
+    // Lógica corrigida:
+    //   1. Se 1º tem mais pontos que o máximo possível de QUALQUER outro time, está garantido
+    //   2. Se algum outro time PODE empatar o atual score do 1º:
+    //      - Verifica confronto direto: se 1º venceu esse time, está garantido
+    //      - Se 1º não venceu (empatou ou perdeu), não está garantido
+    // Retorna o objeto do time se garantido, null se não garantido
+    
+    if (!grupos[grupoLetra]) return null;
+
+    let times = Object.values(grupos[grupoLetra]);
+    
+    // Ordena para pegar primeiro colocado
+    times.sort((a, b) => {
+        if (b.pontos !== a.pontos) return b.pontos - a.pontos;
+        if (b.saldo !== a.saldo) return b.saldo - a.saldo;
+        return b.gm - a.gm;
+    });
+
+    const primeiro = times[0];
+    
+    if (!primeiro) return null;
+
+    // CRITÉRIO 1: Se o primeiro tem mais pontos que o máximo possível de todos os outros, está garantido
+    let garantidoPorPontos = true;
+    
+    for (let i = 1; i < times.length; i++) {
+        const time = times[i];
+        const partidasJogadas = time.vitorias + time.empates + time.derrotas;
+        const partidasRestantes = 3 - partidasJogadas;
+        const maxPontosDoTime = time.pontos + (partidasRestantes * 3);
+        
+        // Se algum time pode ter mais pontos que o primeiro, não está garantido por pontos
+        if (maxPontosDoTime > primeiro.pontos) {
+            garantidoPorPontos = false;
+            break;
+        }
+    }
+    
+    if (garantidoPorPontos) {
+        return primeiro;
+    }
+
+    // CRITÉRIO 2: Verifica se algum OUTRO time consegue superar/empatar o líder
+    // A pergunta é: "ALGUM time consegue ter MAIS pontos que o líder?"
+    // Logo precisa que: maxPontosDoOutro > pontos_atuais_do_líder
+    for (let i = 1; i < times.length; i++) {
+        const concorrente = times[i];
+        const partidasJogadas = concorrente.vitorias + concorrente.empates + concorrente.derrotas;
+        const partidasRestantes = 3 - partidasJogadas;
+        const maxPontosConcorrente = concorrente.pontos + (partidasRestantes * 3);
+
+        // Se este time PODE ter MAIS pontos que o líder, não está garantido
+        if (maxPontosConcorrente > primeiro.pontos) {
+            // Ainda existe chance de alguém superar o líder
+            return null;
+        }
+        
+        // Se consegue EXATAMENTE empatar o score atual do primeiro
+        if (maxPontosConcorrente === primeiro.pontos) {
+            // Procura o confronto direto entre eles
+            const confrontoDireto = jogos.find(j => 
+                j.grupo === grupoLetra && 
+                j.resultado &&
+                ((j.time1 === primeiro.codigo && j.time2 === concorrente.codigo) ||
+                 (j.time1 === concorrente.codigo && j.time2 === primeiro.codigo))
+            );
+
+            // Se ainda não jogaram e podem empatar, o primeiro não está garantido
+            if (!confrontoDireto) {
+                return null;
+            }
+
+            // Se já jogaram, verifica quem venceu
+            const primeiro_eh_time1 = confrontoDireto.time1 === primeiro.codigo;
+            const gols_primeiro = primeiro_eh_time1 ? confrontoDireto.resultado.gols1 : confrontoDireto.resultado.gols2;
+            const gols_concorrente = primeiro_eh_time1 ? confrontoDireto.resultado.gols2 : confrontoDireto.resultado.gols1;
+
+            // Se o primeiro NÃO venceu o confronto direto, não está garantido
+            if (gols_primeiro <= gols_concorrente) {
+                return null; // Pode empatar nos pontos e vencer no confronto direto
+            }
+        }
+    }
+
+    // Se passou por todas as verificações, o primeiro está garantido
+    return primeiro;
+}
+
+function timeEstaGarantido(timeNome, grupoLetra) {
+    // FUNCAO: Verifica se um time específico está garantido na primeira posição
+    // Retorna true se o time está garantido, false caso contrário
+    
+    const primeiro = primeiroGarantido(grupoLetra);
+    return primeiro && primeiro.nome === timeNome;
 }
 
 // Função para renderizar os confrontos de mata-mata dependendo da fase atual
@@ -870,6 +984,21 @@ function renderizarMataMata() {
             const objTime1 = traduzirMarcador(jogo.t1, jogo.id, mapaTerceiros);
             const objTime2 = traduzirMarcador(jogo.t2, jogo.id, mapaTerceiros);
             
+            // Extrai o grupo da marcação (ex: "1° A" -> "A")
+            const regexGrupo = /^(\d)°\s([A-L])$/;
+            const matchT1 = jogo.t1.match(regexGrupo);
+            const matchT2 = jogo.t2.match(regexGrupo);
+            
+            const grupoT1 = matchT1 ? matchT1[2] : null;
+            const grupoT2 = matchT2 ? matchT2[2] : null;
+            
+            // Verifica se times estão garantidos (e se são primeiros colocados)
+            const t1Garantido = grupoT1 && jogo.t1.startsWith("1°") && timeEstaGarantido(objTime1.nome, grupoT1);
+            const t2Garantido = grupoT2 && jogo.t2.startsWith("1°") && timeEstaGarantido(objTime2.nome, grupoT2);
+            
+            const indicadorT1 = t1Garantido ? '<span title="Classificação garantida" style="color: #2ecc71; font-weight: bold; margin-left: 4px;">✓</span>' : '';
+            const indicadorT2 = t2Garantido ? '<span title="Classificação garantida" style="color: #2ecc71; font-weight: bold; margin-left: 4px;">✓</span>' : '';
+            
             const img1 = objTime1.codigo ? `<img src="https://flagcdn.com/32x24/${objTime1.codigo}.png" style="vertical-align: middle; margin-right: 5px; border-radius: 2px;">` : '';
             const img2 = objTime2.codigo ? `<img src="https://flagcdn.com/32x24/${objTime2.codigo}.png" style="vertical-align: middle; margin-right: 5px; border-radius: 2px;">` : '';
 
@@ -898,7 +1027,7 @@ function renderizarMataMata() {
 
                   <div class="placar-compacto match-teams mata-mata-mobile">
                       <div class="selecao-padrao team home" style="font-weight: 600;">
-                          <span>${img1} ${objTime1.nome}</span>
+                          <span>${img1} ${objTime1.nome}${indicadorT1}</span>
                           <input 
                               type="number" 
                               min="0" 
@@ -922,7 +1051,7 @@ function renderizarMataMata() {
                               ${inputsDesabilitados} 
                               placeholder="-"
                           >
-                          <span>${img2} ${objTime2.nome}</span>
+                          <span>${img2} ${objTime2.nome}${indicadorT2}</span>
                       </div>
                   </div>
 
