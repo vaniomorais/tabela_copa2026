@@ -156,6 +156,9 @@ let jogos = [
   { rodada: 3, data: "2026-06-27", hora: "23:00", grupo: "J", time1: "dz", time2: "at", resultado: null }
 ];
 
+// NOTA: MAPA_TERCEIROS_FIFA é definido em conbinacoes-fifa.js com as 495 combinações possíveis
+// Não redefina aqui para não sobrescrever o mapa gerado dinamicamente
+
 // Variáveis globais
 let rodadaAtual = 1;
 let jogoEmEdicao = null;
@@ -507,17 +510,13 @@ function cancelarEdicao(jogoIndex) {
 }
 
 function avancarRodada() {
-  if (rodadaAtual < 3) {
-    rodadaAtual++;
-    renderizarJogosDaRodada();
-  }
+  rodadaAtual = Math.min(3, rodadaAtual + 1);
+  renderizarJogosDaRodada();
 }
 
 function retrocederRodada() {
-  if (rodadaAtual > 1) {
-    rodadaAtual--;
-    renderizarJogosDaRodada();
-  }
+  rodadaAtual = Math.max(1, rodadaAtual - 1);
+  renderizarJogosDaRodada();
 }
 
 function mostrarNotificacao(mensagem, tipo = "info") {
@@ -537,66 +536,19 @@ function mostrarNotificacao(mensagem, tipo = "info") {
 }
 
 // ================== GUARDA LOCAL (LOCALSTORAGE) ==================
-function salvarDados() {
-  // Converte os objetos para texto (JSON) e guarda no navegador
-  localStorage.setItem("copa2026_grupos", JSON.stringify(grupos));
-  localStorage.setItem("copa2026_jogos", JSON.stringify(jogos));
-}
 
-function carregarDados() {
-  const gruposGuardados = localStorage.getItem("copa2026_grupos");
-  const jogosGuardados = localStorage.getItem("copa2026_jogos");
-
-  // Se houver dados guardados de visitas anteriores, substitui os dados vazios
-  if (gruposGuardados && jogosGuardados) {
-    grupos = JSON.parse(gruposGuardados);
-    jogos = JSON.parse(jogosGuardados);
-  }
-}
 
 function todosGruposConcluidos() {
-    const letras = ['A','B','C','D','E','F','G','H','I','J','K','L'];
-    for (let letra of letras) {
-        if (!grupoConcluido(letra)) return false;
-    }
-    return true;
+    return CONFIG_COPA_2026.GRUPOS.every(letra => grupoConcluido(letra));
 }
 
-function calcularRanking(grupoId) {
-    const times = Object.values(grupos[grupoId]);
-    
-    times.sort((a, b) => {
-        // 1. Critério: Pontos
-        if (b.pontos !== a.pontos) return b.pontos - a.pontos;
-        
-        // 2. Critério: Confronto Direto
-        // Procuramos o jogo entre A e B nos dados de 'jogos'
-        const jogoConfronto = jogos.find(j => 
-            j.grupo === grupoId && 
-            ((j.time1 === a.codigo && j.time2 === b.codigo) || 
-             (j.time1 === b.codigo && j.time2 === a.codigo))
-        );
 
-        if (jogoConfronto && jogoConfronto.resultado) {
-            const golsA = jogoConfronto.time1 === a.codigo ? jogoConfronto.resultado.gols1 : jogoConfronto.resultado.gols2;
-            const golsB = jogoConfronto.time1 === b.codigo ? jogoConfronto.resultado.gols1 : jogoConfronto.resultado.gols2;
-            
-            if (golsA > golsB) return -1; // A venceu o confronto
-            if (golsB > golsA) return 1;  // B venceu o confronto
-            // Se empatou no confronto direto, segue para o próximo critério
-        }
-        
-        // 3. Critério: Saldo de Gols
-        if (b.saldo !== a.saldo) return b.saldo - a.saldo;
-        
-        // 4. Critério: Gols Marcados
-        return b.gm - a.gm;
-    });
-    
-    return times;
-}
 
 function obterTop8Terceiros() {
+    // FUNCAO: Classifica os 8 melhores 3o colocados de todos os grupos
+    // Criterios de desempate: Pontos > Saldo de Gols > Gols Marcados
+    // Retorna: Array com ate 8 terceiros, contendo { grupo: 'A', time: {...} }
+    
     let terceiros = [];
     const letras = ['A','B','C','D','E','F','G','H','I','J','K','L'];
     
@@ -604,7 +556,7 @@ function obterTop8Terceiros() {
         if (!grupos[letra]) continue;
         
         let times = Object.values(grupos[letra]);
-        if (times.length < 3) continue; // Trava de segurança: ignora grupos incompletos
+        if (times.length < 3) continue; // Trava de seguranca: ignora grupos incompletos
         
         times.sort((a, b) => {
             if (b.pontos !== a.pontos) return b.pontos - a.pontos;
@@ -622,6 +574,7 @@ function obterTop8Terceiros() {
         }
     }
 
+    // Ordena por Pontos > Saldo > Gols Marcados
     terceiros.sort((a, b) => {
         if (b.time.pontos !== a.time.pontos) return b.time.pontos - a.time.pontos;
         if (b.time.saldo !== a.time.saldo) return b.time.saldo - a.time.saldo;
@@ -631,86 +584,89 @@ function obterTop8Terceiros() {
     return terceiros.slice(0, 8);
 }
 
-function verificarSeMelhorTerceiro(codigoDoTime) {
-    const oitoMelhores = obterTop8Terceiros();
-    // Verifica se o código do time existe dentro do Top 8
-    return oitoMelhores.some(t => t.time.codigo === codigoDoTime);
-}
+
 
 function calcularMelhoresTerceiros() {
-    // 1. Pega a lista pronta da nossa função central!
+    // FUNCAO: Mapeia os 8 melhores 3o colocados para os slots de jogo conforme combinacoes FIFA
+    // Usa MAPA_TERCEIROS_FIFA (495 combinacoes oficiais) para determinar qual terceiro vai para cada jogo
+    // Retorna: { idJogo: timeObject, idJogo: timeObject, ... }
+
     const oitoMelhores = obterTop8Terceiros();
 
-    // 2. Regras de chaves 
-    const regrasAlocacao = [
-        { id: 74, letras: ["A","B","C","D","F"] },
-        { id: 77, letras: ["C","D","F","G","H"] },
-        { id: 79, letras: ["C","F","G","H","I","J"] },
-        { id: 80, letras: ["E","H","I","J","K"] }, 
-        { id: 81, letras: ["B","E","F","I","J"] },
-        { id: 82, letras: ["A","E","H","I","J"] },
-        { id: 86, letras: ["D","E","I","J","L"] },
-        { id: 87, letras: ["E","F","G","I","J"] }
-    ];
+    // Cria chave para lookup no mapa FIFA
+    // Exemplo: grupos A,C,D,E,F,H,I,J -> chave = "ACDEFHIJ"
+    const chave = oitoMelhores
+        .map(t => t.grupo)
+        .sort()
+        .join("");
 
-    // 3. Algoritmo de encaixe
-    function alocarTimes(regras, disponiveis, index, resultadoAtual) {
-        if (index === regras.length) return resultadoAtual; 
-        
-        let regra = regras[index];
-        for (let i = 0; i < disponiveis.length; i++) {
-            let t = disponiveis[i];
-            
-            if (regra.letras.includes(t.grupo)) {
-                let novoResultado = { ...resultadoAtual, [regra.id]: t.time };
-                let novosDisponiveis = [...disponiveis];
-                novosDisponiveis.splice(i, 1);
-                
-                let tentativa = alocarTimes(regras, novosDisponiveis, index + 1, novoResultado);
-                if (tentativa) return tentativa;
-            }
-        }
-        return null; 
+    const combinacao = MAPA_TERCEIROS_FIFA[chave];
+
+    if (!combinacao) {
+        console.warn("[AVISO] Combinação FIFA não encontrada para:", chave);
+        console.warn("Total de combinacoes disponiveis:", Object.keys(window.MAPA_TERCEIROS_FIFA || {}).length);
+        return {};
     }
 
-    return alocarTimes(regrasAlocacao, oitoMelhores, 0, {}) || {};
+    // Log informativo (pode ser removido em producao)
+    console.log("[INFO] Combinacao FIFA", chave, "mapeada para", Object.keys(combinacao).length, "jogos de terceiros");
+
+    const resultado = {};
+
+    // Para cada slot de jogo, encontra o terceiro que vai jogar ali
+    Object.entries(combinacao).forEach(([jogoId, grupo]) => {
+        const terceiro = oitoMelhores.find(t => t.grupo === grupo);
+
+        if (terceiro) {
+            resultado[jogoId] = terceiro.time;
+        }
+    });
+
+    return resultado;
 }
 
-function calcularMataMata() {
-    let terceirosColocados = [];
-    let primeiros = {};
-    let segundos = {};
 
-    // 1. Coleta os 1º, 2º e 3º de todos os grupos
-    Object.keys(grupos).forEach(grupoId => {
-        const ranking = calcularRanking(grupoId);
-        primeiros[grupoId] = ranking[0];
-        segundos[grupoId] = ranking[1];
-        
-        // Adiciona o 3º colocado à lista geral de terceiros
-        let terceiro = ranking[2];
-        terceiro.grupoOrigem = grupoId;
-        terceirosColocados.push(terceiro);
-    });
 
-    // 2. Ordena os terceiros pelo critério geral (Pontos > Saldo > Gols)
-    terceirosColocados.sort((a, b) => {
-        if (b.pontos !== a.pontos) return b.pontos - a.pontos;
-        if (b.saldo !== a.saldo) return b.saldo - a.saldo;
-        return b.gm - a.gm;
-    });
-
-    // 3. Pega os 8 melhores
-    const melhoresTerceiros = terceirosColocados.slice(0, 8);
-
-    // Agora você já tem os dados para montar os JOGOS 1 a 16.
-    // Exemplo para o Jogo 3 (1º C vs 2º F):
-    // const time1 = primeiros['C'];
-    // const time2 = segundos['F'];
+function obterInformacoesCombinacaoFIFA() {
+    // FUNCAO AUXILIAR: Retorna informacoes sobre qual combinacao FIFA esta sendo usada
+    // Util para debug e visualizacao do sistema
     
-    console.log("Ranking Finalizado. Primeiros:", primeiros, "Melhores Terceiros:", melhoresTerceiros);
-    // Aqui seguiremos com a montagem visual dos cards...
+    if (!todosGruposConcluidos()) {
+        return {
+            status: "pendente",
+            mensagem: "Aguardando conclusao de todos os grupos"
+        };
+    }
+    
+    const oitoMelhores = obterTop8Terceiros();
+    const chaveCombinacao = oitoMelhores.map(t => t.grupo).sort().join("");
+    const combinacao = window.MAPA_TERCEIROS_FIFA?.[chaveCombinacao];
+    
+    if (!combinacao) {
+        return {
+            status: "erro",
+            chave: chaveCombinacao,
+            mensagem: "Combinacao FIFA não encontrada",
+            gruposCombinacao: oitoMelhores.map(t => t.grupo)
+        };
+    }
+    
+    return {
+        status: "sucesso",
+        chave: chaveCombinacao,
+        totalCombinacoes: Object.keys(window.MAPA_TERCEIROS_FIFA || {}).length,
+        terceiros: oitoMelhores.map(t => ({
+            grupo: t.grupo,
+            time: t.time.nome,
+            pontos: t.time.pontos,
+            saldo: t.time.saldo
+        })),
+        mapeamento: combinacao,
+        mensagem: `Combinacao ${chaveCombinacao} de ${Object.keys(window.MAPA_TERCEIROS_FIFA || {}).length} disponiveis`
+    };
 }
+
+
 
 let faseAtual = 0; // 0 = Grupos, 1 = 16 Avos
 let nomesFases = [
@@ -733,30 +689,15 @@ function mudarFase(direcao) {
     atualizarInterfaceFase();
 }
 
-function atualizarInterfaceFase() {
-    document.getElementById("faseTitulo").textContent = nomesFases[faseAtual];
-    document.getElementById("btnFaseAnterior").disabled = (faseAtual === 0);
-    document.getElementById("btnFaseProxima").disabled = (faseAtual === nomesFases.length - 1);
-    
-    const containerGrupos = document.getElementById("grupos");
-    const containerLateral = document.querySelector(".painel-lateral");
-    const mataMataSection = document.getElementById("faseMataMata");
 
-    if (faseAtual === 0) {
-        containerGrupos.style.display = "block";
-        containerLateral.style.display = "block";
-        if(mataMataSection) mataMataSection.style.display = "none";
-    } else {
-        containerGrupos.style.display = "none";
-        containerLateral.style.display = "none";
-        if(mataMataSection) {
-            mataMataSection.style.display = "block";
-            renderizarMataMata();
-        }
-    }
-}
 
 function traduzirMarcador(textoMarcador, idJogo = null, mapaTerceiros = null) {
+    // FUNCAO: Converte descricoes de times para objetos com nome e codigo
+    // Exemplos:
+    //   "1° A" -> {nome: "Brasil", codigo: "br"}
+    //   "2° B" -> {nome: "Belgica", codigo: "be"}  
+    //   "3° A,B,C,D,F" -> Usa mapaTerceiros para descobrir qual terceiro jogara neste slot
+    
     const regexGrupo = /^(\d)°\s([A-L])$/;
     const matchGrupo = textoMarcador.match(regexGrupo);
     
@@ -781,6 +722,7 @@ function traduzirMarcador(textoMarcador, idJogo = null, mapaTerceiros = null) {
     }
 
     if (textoMarcador.startsWith("3°")) {
+        // Tratamento de terceiros colocados
         if (!todosGruposConcluidos() || !mapaTerceiros) {
             return { nome: textoMarcador, codigo: "" };
         }
@@ -836,6 +778,14 @@ function grupoConcluido(grupoLetra) {
 
 // Função para renderizar os confrontos de mata-mata dependendo da fase atual
 function renderizarMataMata() {
+    // FUNCAO: Renderiza os confrontos de mata-mata com os terceiros colocados corretamente mapeados
+    // Usa as 495 combinacoes oficiais FIFA para determinar qual terceiro vai para cada jogo
+    // Processo:
+    //   1. Obtém os 8 melhores terceiros colocados
+    //   2. Encontra a combinacao FIFA correspondente (lookup de 495 combinacoes)
+    //   3. Mapeia terceiros para slots de jogo (74, 77, 79, 80, 81, 82, 86, 87)
+    //   4. Renderiza confrontos com times reais via funcao traduzirMarcador()
+    
     const container = document.getElementById("chaveamentoContainer");
     
     if (container) {
@@ -849,25 +799,25 @@ function renderizarMataMata() {
     const todosConfrontos = {
         "16 Avos de final": [
             { id: 73, data: "28/06/2026", hora: "16:00", t1: "2° A", t2: "2° B" },
-            { id: 74, data: "29/06/2026", hora: "14:00", t1: "1° E", t2: "3° A,B,C,D,F" },
+            { id: 74, data: "29/06/2026", hora: "17:30", t1: "1° E", t2: "3° A,B,C,D,F" },
             { id: 75, data: "29/06/2026", hora: "22:00", t1: "1° F", t2: "2° C" },
             { id: 76, data: "29/06/2026", hora: "14:00", t1: "1° C", t2: "2° F" },
             { id: 77, data: "30/06/2026", hora: "18:00", t1: "1° I", t2: "3° C,D,F,G,H" },
-            { id: 78, data: "30/06/2026", hora: "18:00", t1: "2° E", t2: "2° I" },
-            { id: 79, data: "30/06/2026", hora: "22:00", t1: "1° A", t2: "3° C,F,G,H,I,J" },
-            { id: 80, data: "30/06/2026", hora: "13:00", t1: "1° L", t2: "3° E,H,J,I,K" },
+            { id: 78, data: "30/06/2026", hora: "14:00", t1: "2° E", t2: "2° I" },
+            { id: 79, data: "30/06/2026", hora: "22:00", t1: "1° A", t2: "3° C,E,F,H,I" },
+            { id: 80, data: "30/06/2026", hora: "13:00", t1: "1° L", t2: "3° E,H,I,J,K" },
             { id: 81, data: "01/07/2026", hora: "21:00", t1: "1° D", t2: "3° B,E,F,I,J" },
             { id: 82, data: "01/07/2026", hora: "17:00", t1: "1° G", t2: "3° A,E,H,I,J" },
-            { id: 83, data: "02/07/2026", hora: "20:00", t1: "2° L", t2: "1° H" },
-            { id: 84, data: "02/07/2026", hora: "19:00", t1: "2° H", t2: "2° D" },
-            { id: 85, data: "03/07/2026", hora: "13:00", t1: "2° G", t2: "1° B" },
-            { id: 86, data: "07/07/2026", hora: "17:00", t1: "1° J", t2: "3° D,E,I,J,L" },
-            { id: 87, data: "07/07/2026", hora: "17:00", t1: "1° K", t2: "3° E,F,G,I,J" },
+            { id: 83, data: "02/07/2026", hora: "20:00", t1: "2° K", t2: "2° L" },
+            { id: 84, data: "02/07/2026", hora: "16:00", t1: "1° H", t2: "2° J" },
+            { id: 85, data: "03/07/2026", hora: "00:00", t1: "1° B", t2: "3° E,F,G,I,J" },
+            { id: 86, data: "07/07/2026", hora: "17:00", t1: "1° J", t2: "2° H" },
+            { id: 87, data: "07/07/2026", hora: "17:00", t1: "1° K", t2: "3° D,E,I,J,L" },
             { id: 88, data: "03/07/2026", hora: "15:00", t1: "2° D", t2: "2° G" }
         ],
         "Oitavas de final": [
-            { id: 89, data: "04/07/2026", hora: "16:00", t1: "Venc. J73", t2: "Venc. J75" },
-            { id: 90, data: "04/07/2026", hora: "18:00", t1: "Venc. J74", t2: "Venc. J77" },
+            { id: 89, data: "04/07/2026", hora: "18:00", t1: "Venc. J74", t2: "Venc. J77" },
+            { id: 90, data: "04/07/2026", hora: "14:00", t1: "Venc. J73", t2: "Venc. J75" },
             { id: 91, data: "05/07/2026", hora: "17:00", t1: "Venc. J76", t2: "Venc. J78" },
             { id: 92, data: "05/07/2026", hora: "21:00", t1: "Venc. J79", t2: "Venc. J80" },
             { id: 93, data: "06/07/2026", hora: "16:00", t1: "Venc. J83", t2: "Venc. J84" },
@@ -878,12 +828,12 @@ function renderizarMataMata() {
         "Quartas de final": [
             { id: 97, data: "09/07/2026", hora: "17:00", t1: "Venc. J89", t2: "Venc. J90" },
             { id: 98, data: "10/07/2026", hora: "16:00", t1: "Venc. J93", t2: "Venc. J94" },
-            { id: 99, data: "11/07/2026", hora: "13:00", t1: "Venc. J95", t2: "Venc. J96" },
-            { id: 100, data: "11/07/2026", hora: "17:00", t1: "Venc. J91", t2: "Venc. J92" }
+            { id: 99, data: "11/07/2026", hora: "18:00", t1: "Venc. J91", t2: "Venc. J92" },
+            { id: 100, data: "11/07/2026", hora: "22:00", t1: "Venc. J95", t2: "Venc. J96" }
         ],
         "Semifinal": [
-            { id: 101, data: "14/07/2026", hora: "16:00", t1: "Venc. J97", t2: "Venc. J99" },
-            { id: 102, data: "15/07/2026", hora: "16:00", t1: "Venc. J98", t2: "Venc. J100" }
+            { id: 101, data: "14/07/2026", hora: "16:00", t1: "Venc. J97", t2: "Venc. J98" },
+            { id: 102, data: "15/07/2026", hora: "16:00", t1: "Venc. J99", t2: "Venc. J100" }
         ],
         "Decisão do 3º lugar": [
             { id: 103, data: "18/07/2026", hora: "18:00", t1: "Perd. J101", t2: "Perd. J102" }
@@ -898,6 +848,14 @@ function renderizarMataMata() {
     let mapaTerceiros = null;
     if (todosGruposConcluidos()) {
         mapaTerceiros = calcularMelhoresTerceiros();
+        
+        // Se conseguiu mapear, exibe informacao sobre qual combinacao foi usada
+        if (Object.keys(mapaTerceiros).length > 0) {
+            const oitoMelhores = obterTop8Terceiros();
+            const chaveCombinacao = oitoMelhores.map(t => t.grupo).sort().join("");
+            console.log(">>> MATA-MATA: Usando combinacao FIFA", chaveCombinacao);
+            console.log("    Terceiros mapeados:", oitoMelhores.map(t => `${t.grupo}(${t.time.nome})`).join(", "));
+        }
     }
 
     // 🚨 SEGURANÇA MÁXIMA: Só executa a injeção visual se o container existir no HTML
@@ -1274,11 +1232,7 @@ function aplicarTemaSalvo() {
 
 function alternarTema() {
   document.body.classList.toggle("dark-mode");
-
-  const temaAtual = document.body.classList.contains("dark-mode")
-    ? "escuro"
-    : "claro";
-
+  const temaAtual = document.body.classList.contains("dark-mode") ? "escuro" : "claro";
   localStorage.setItem("temaCopa2026", temaAtual);
   atualizarTextoBotaoTema();
 }
@@ -1286,55 +1240,12 @@ function alternarTema() {
 function atualizarTextoBotaoTema() {
   const btnTema = document.getElementById("btnAlternarTema");
   if (!btnTema) return;
-
   btnTema.textContent = document.body.classList.contains("dark-mode")
     ? "☀️ Modo claro"
     : "🌙 Modo escuro";
 }
 
-function alternarTema() {
-    document.body.classList.toggle("dark-mode");
-
-    const temaAtual = document.body.classList.contains("dark-mode")
-        ? "escuro"
-        : "claro";
-
-    localStorage.setItem("temaCopa2026", temaAtual);
-
-    atualizarTextoBotaoTema();
-}
-
-function atualizarTextoBotaoTema() {
-    const btnTema = document.getElementById("btnAlternarTema");
-
-    if (!btnTema) return;
-
-    btnTema.textContent = document.body.classList.contains("dark-mode")
-        ? "☀️ Modo claro"
-        : "🌙 Modo escuro";
-}
-
 // ================== INICIALIZAÇÃO ==================
-document.addEventListener("DOMContentLoaded", function() {
-  carregarDados();
-  aplicarTemaSalvo();
-  
-  gerarTabelas();
-  renderizarJogosDaRodada();
-  abrirRodadaDoJogoDeHoje();
-
-  document.getElementById("btnResetarTorneio")
-  ?.addEventListener("click", resetarTorneio);
-  
-  document.getElementById("btnRodadaProxima").addEventListener("click", avancarRodada);
-  document.getElementById("btnRodadaAnterior").addEventListener("click", retrocederRodada);
-});
-
-
-/* =========================================================
-   REVISÃO V2 - funções auxiliares e sobrescritas seguras
-   Mantém os dados originais, mas centraliza regras repetidas.
-   ========================================================= */
 const CONFIG_COPA_2026 = Object.freeze({
   GRUPOS: ['A','B','C','D','E','F','G','H','I','J','K','L'],
   CLASSIFICADOS_DIRETOS: 2,
@@ -1343,53 +1254,51 @@ const CONFIG_COPA_2026 = Object.freeze({
   RODADA_MAX: 3
 });
 
-const btnExportarDados = document.getElementById("btnExportarDados");
-const btnImportarDados = document.getElementById("btnImportarDados");
-const btnConsultarResultados = document.getElementById("btnConsultarResultados");
+document.addEventListener("DOMContentLoaded", function() {
+  // Carrega dados e configurações iniciais
+  carregarDados();
+  aplicarTemaSalvo();
+  gerarTabelas();
+  renderizarJogosDaRodada();
+  abrirRodadaDoJogoDeHoje();
 
-if (btnConsultarResultados) {
-    btnConsultarResultados.addEventListener("click", consultarResultados);
-}
+  // Inicializa event listeners de forma consolidada
+  const elementosEventos = {
+    btnResetarTorneio: resetarTorneio,
+    btnRodadaProxima: avancarRodada,
+    btnRodadaAnterior: retrocederRodada,
+    btnExportarDados: exportarBackup,
+    btnConsultarResultados: consultarResultados,
+    btnAlternarTema: alternarTema
+  };
 
-const inputImportarBackup =
-    document.getElementById("inputImportarBackup");
+  Object.entries(elementosEventos).forEach(([id, callback]) => {
+    const btn = document.getElementById(id);
+    if (btn) btn.addEventListener('click', callback);
+  });
 
-if (btnImportarDados && inputImportarBackup) {
+  // Evento especial: Input de arquivo de backup
+  const btnImportarDados = document.getElementById('btnImportarDados');
+  const inputImportarBackup = document.getElementById('inputImportarBackup');
+  if (btnImportarDados && inputImportarBackup) {
+    btnImportarDados.addEventListener('click', () => inputImportarBackup.click());
+    inputImportarBackup.addEventListener('change', importarBackup);
+  }
 
-    btnImportarDados.addEventListener("click", () => {
-        inputImportarBackup.click();
+  // Menu de aplicação
+  const btnMenuApp = document.getElementById('btnMenuApp');
+  const opcoesMenuApp = document.getElementById('opcoesMenuApp');
+  if (btnMenuApp && opcoesMenuApp) {
+    btnMenuApp.addEventListener('click', (e) => {
+      e.stopPropagation();
+      opcoesMenuApp.classList.toggle('ativo');
     });
+    document.addEventListener('click', () => opcoesMenuApp.classList.remove('ativo'));
+    opcoesMenuApp.addEventListener('click', () => opcoesMenuApp.classList.remove('ativo'));
+  }
+});
 
-    inputImportarBackup.addEventListener(
-        "change",
-        importarBackup
-    );
-}
-if (btnExportarDados) {
-  btnExportarDados.addEventListener("click", exportarBackup);
-}
-const btnMenuApp = document.getElementById("btnMenuApp");
-const opcoesMenuApp = document.getElementById("opcoesMenuApp");
-
-if (btnMenuApp && opcoesMenuApp) {
-  btnMenuApp.addEventListener("click", (event) => {
-    event.stopPropagation();
-    opcoesMenuApp.classList.toggle("ativo");
-  });
-
-  document.addEventListener("click", () => {
-    opcoesMenuApp.classList.remove("ativo");
-  });
-
-  opcoesMenuApp.addEventListener("click", () => {
-    opcoesMenuApp.classList.remove("ativo");
-  });
-}
-
-  const btnAlternarTema = document.getElementById("btnAlternarTema");
-if (btnAlternarTema) {
-    btnAlternarTema.addEventListener("click", alternarTema);
-}
+// ================== FUNÇÕES AUXILIARES ==================
 
 function obterTimeDoJogo(jogo, lado) {
   if (!jogo || !grupos[jogo.grupo]) return null;
@@ -1458,35 +1367,6 @@ function calcularRanking(grupoId) {
   return Object.values(grupos[grupoId] || {}).slice().sort((a, b) => compararTimes(a, b, grupoId));
 }
 
-function grupoConcluido(grupoLetra) {
-  return Object.values(grupos[grupoLetra] || {}).every(time => {
-    const partidas = (time.vitorias || 0) + (time.empates || 0) + (time.derrotas || 0);
-    return partidas >= 3;
-  });
-}
-
-function todosGruposConcluidos() {
-  return CONFIG_COPA_2026.GRUPOS.every(grupoConcluido);
-}
-
-function obterTop8Terceiros() {
-  const terceiros = CONFIG_COPA_2026.GRUPOS
-    .map(grupo => ({ grupo, time: calcularRanking(grupo)[2] }))
-    .filter(({ time }) => {
-      if (!time) return false;
-      const partidas = (time.vitorias || 0) + (time.empates || 0) + (time.derrotas || 0);
-      return partidas > 0;
-    })
-    .sort((a, b) => compararTimes(a.time, b.time));
-
-  return terceiros.slice(0, CONFIG_COPA_2026.MELHORES_TERCEIROS);
-}
-
-function verificarSeMelhorTerceiro(codigoDoTime) {
-  if (!todosGruposConcluidos()) return false;
-  return obterTop8Terceiros().some(({ time }) => time.codigo === codigoDoTime);
-}
-
 function confirmarResultado(jogoIndex) {
   const placar = lerPlacarDoCard(jogoIndex);
   const jogo = jogos[jogoIndex];
@@ -1523,16 +1403,6 @@ function salvarEdicao(jogoIndex) {
   renderizarJogosDaRodada();
   salvarDados();
   mostrarNotificacao('Resultado atualizado com sucesso!', 'sucesso');
-}
-
-function avancarRodada() {
-  rodadaAtual = Math.min(CONFIG_COPA_2026.RODADA_MAX, rodadaAtual + 1);
-  renderizarJogosDaRodada();
-}
-
-function retrocederRodada() {
-  rodadaAtual = Math.max(CONFIG_COPA_2026.RODADA_MIN, rodadaAtual - 1);
-  renderizarJogosDaRodada();
 }
 
 function carregarDados() {

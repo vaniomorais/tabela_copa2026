@@ -30,12 +30,7 @@
             <button id="btnConsultarResultados" type="button">🔎 Consultar Resultados</button>
             <button id="btnResetarTorneio" type="button" class="opcao-perigo">🗑️ Limpar resultados</button>
 
-            <input
-                type="file"
-                id="inputImportarBackup"
-                accept=".json"
-                style="display:none;"
-            >
+            <input type="file" id="inputImportarBackup" accept=".json" class="hidden-input">
         </div>
       </div>
     </div>
@@ -82,24 +77,17 @@
     <p>&copy; 2026 Tabela Copa do Mundo | Dev jVSM iNC</p>
   </footer>
 
+  <script src="fifa_combinations.js"></script>
+  <script src="conbinacoes-fifa.js"></script>
   <script src="script.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-
   <script>
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./service-worker.js')
-              .then(reg => {
-                  console.log('Service Worker registrado');
-
-                  // Verifica se existe atualização
-                  reg.update();
-              })
-              .catch(error => {
-                  console.error('Erro ao registrar Service Worker:', error);
-            });
-        });
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(() => console.log('Service Worker registrado'))
+          .catch(error => console.error('SW Error:', error));
+      });
     }
   </script>
 </body>
