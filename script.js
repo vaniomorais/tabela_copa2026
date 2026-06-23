@@ -996,8 +996,8 @@ function renderizarMataMata() {
             const t1Garantido = grupoT1 && jogo.t1.startsWith("1°") && timeEstaGarantido(objTime1.nome, grupoT1);
             const t2Garantido = grupoT2 && jogo.t2.startsWith("1°") && timeEstaGarantido(objTime2.nome, grupoT2);
             
-            const indicadorT1 = t1Garantido ? '<span title="Classificação garantida" style="color: #2ecc71; font-weight: bold; margin-left: 4px;">✓</span>' : '';
-            const indicadorT2 = t2Garantido ? '<span title="Classificação garantida" style="color: #2ecc71; font-weight: bold; margin-left: 4px;">✓</span>' : '';
+            const indicadorT1 = t1Garantido ? '<span title="Classificação garantida" style="color: #2ecc71; font-weight: bold; margin-left: 4px;"></span>' : '';
+            const indicadorT2 = t2Garantido ? '<span title="Classificação garantida" style="color: #2ecc71; font-weight: bold; margin-left: 4px;"></span>' : '';
             
             const img1 = objTime1.codigo ? `<img src="https://flagcdn.com/32x24/${objTime1.codigo}.png" style="vertical-align: middle; margin-right: 5px; border-radius: 2px;">` : '';
             const img2 = objTime2.codigo ? `<img src="https://flagcdn.com/32x24/${objTime2.codigo}.png" style="vertical-align: middle; margin-right: 5px; border-radius: 2px;">` : '';
