@@ -67,13 +67,13 @@ A aplicação pode ser utilizada diretamente pelo navegador ou instalada como ap
 
 ### Desktop
 
-1. Abra o site.
+1. Abra o site https://vaniomorais.github.io/tabela_copa2026/
 2. Clique no ícone de instalação do navegador.
 3. Confirme a instalação.
 
 ### Android
 
-1. Abra o site no navegador.
+1. Abra o site https://vaniomorais.github.io/tabela_copa2026/ no navegador. 
 2. Selecione "Instalar aplicativo" ou "Adicionar à tela inicial".
 3. Confirme a instalação.
 
