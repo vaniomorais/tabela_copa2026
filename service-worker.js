@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tabela-copa-v2.6';
+const CACHE_NAME = 'tabela-copa-v2.7';
 
 const FILES_TO_CACHE = [
     './',
@@ -39,4 +39,10 @@ self.addEventListener('fetch', event => {
         caches.match(event.request)
             .then(response => response || fetch(event.request))
     );
+});
+
+self.addEventListener('message', event => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });

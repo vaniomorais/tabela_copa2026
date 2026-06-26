@@ -85,7 +85,76 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./service-worker.js')
-          .then(() => console.log('Service Worker registrado'))
+          .then(reg => {
+            console.log('Service Worker registrado');
+            
+            // Verifica atualizações a cada 5 minutos
+            setInterval(() => {
+              reg.update().then(() => {
+                if (reg.waiting) {
+                  console.log('Nova versão disponível!');
+                  const updateMsg = document.createElement('div');
+                  updateMsg.id = 'update-notification';
+                  updateMsg.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #0f7a3b 0%, #15a84f 100%);
+                    color: white;
+                    padding: 16px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    font-family: Arial, sans-serif;
+                    gap: 12px;
+                  `;
+                  updateMsg.innerHTML = `
+                    <span>🔄 Nova versão disponível!</span>
+                    <div style="display: flex; gap: 8px;">
+                      <button id="btnAtualizarAgora" style="
+                        background: white;
+                        color: #0f7a3b;
+                        border: none;
+                        padding: 6px 16px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-weight: bold;
+                        font-size: 14px;
+                      ">Atualizar</button>
+                      <button id="btnAdiarUpdate" style="
+                        background: rgba(255, 255, 255, 0.2);
+                        color: white;
+                        border: 1px solid white;
+                        padding: 6px 16px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 14px;
+                      ">Depois</button>
+                    </div>
+                  `;
+                  
+                  document.body.appendChild(updateMsg);
+                  
+                  document.getElementById('btnAtualizarAgora').addEventListener('click', () => {
+                    reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+                    updateMsg.remove();
+                  });
+                  
+                  navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    window.location.reload();
+                  });
+                  
+                  document.getElementById('btnAdiarUpdate').addEventListener('click', () => {
+                    updateMsg.remove();
+                  });
+                }
+              });
+            }, 5 * 60 * 1000); // 5 minutos
+          })
           .catch(error => console.error('SW Error:', error));
       });
     }
