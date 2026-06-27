@@ -86,23 +86,28 @@
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./service-worker.js')
         .then(reg => {
-          console.log('Service Worker registrado');
+          console.log('✅ Service Worker registrado com sucesso');
 
           // Verifica atualizações a cada 5 minutos
           setInterval(() => {
+            console.log('🔍 Verificando atualizações do Service Worker...');
             reg.update();
           }, 5 * 60 * 1000);
 
           // Se já houver uma versão em waiting
           if (reg.waiting) {
+            console.log('📦 Versão em waiting detectada');
             showUpdateNotification(reg);
           }
 
           // Detecta quando um novo SW é encontrado
           reg.addEventListener('updatefound', () => {
+            console.log('🆕 Novo Service Worker encontrado');
             const newWorker = reg.installing;
             newWorker.addEventListener('statechange', () => {
-              if (newWorker.state === 'installed' && reg.waiting) {
+              console.log('📊 Estado do novo SW:', newWorker.state);
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('⏳ Novo SW instalado, mostrando notificação');
                 showUpdateNotification(reg);
               }
             });
@@ -110,68 +115,77 @@
 
           // Recarrega a página quando o SW assume o controle
           navigator.serviceWorker.addEventListener('controllerchange', () => {
+            console.log('🔄 Novo Service Worker ativado, recarregando...');
             window.location.reload();
           });
         })
-        .catch(error => console.error('SW Error:', error));
+        .catch(error => console.error('❌ Erro ao registrar SW:', error));
     });
   }
 
   function showUpdateNotification(reg) {
-    console.log('Nova versão disponível!');
+    // Verifica se a notificação já existe para evitar duplicação
+    const existente = document.getElementById('update-notification');
+    if (existente) {
+      console.log('⚠️ Notificação de atualização já está visível');
+      return;
+    }
+
+    console.log('✨ Exibindo notificação de atualização');
     const updateMsg = document.createElement('div');
     updateMsg.id = 'update-notification';
-    updateMsg.style.cssText = `
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      background: linear-gradient(135deg, #0f7a3b 0%, #15a84f 100%);
-      color: white;
-      padding: 16px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-family: Arial, sans-serif;
-      gap: 12px;
-    `;
+    
     updateMsg.innerHTML = `
-      <span>🔄 Nova versão disponível!</span>
-      <div style="display: flex; gap: 8px;">
-        <button id="btnAtualizarAgora" style="
-          background: white;
-          color: #0f7a3b;
-          border: none;
-          padding: 6px 16px;
-          border-radius: 4px;
-          cursor: pointer;
-          font-weight: bold;
-          font-size: 14px;
-        ">Atualizar</button>
-        <button id="btnAdiarUpdate" style="
-          background: rgba(255, 255, 255, 0.2);
-          color: white;
-          border: 1px solid white;
-          padding: 6px 16px;
-          border-radius: 4px;
-          cursor: pointer;
-          font-size: 14px;
-        ">Depois</button>
+      <span>🔄 <strong>Nova versão disponível!</strong></span>
+      <div>
+        <button id="btnAtualizarAgora">Atualizar</button>
+        <button id="btnAdiarUpdate">Depois</button>
       </div>
     `;
 
     document.body.appendChild(updateMsg);
+    console.log('✅ Notificação de atualização adicionada ao DOM');
 
-    document.getElementById('btnAtualizarAgora').addEventListener('click', () => {
-      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-      updateMsg.remove();
+    const btnAtualizar = document.getElementById('btnAtualizarAgora');
+    const btnAdiar = document.getElementById('btnAdiarUpdate');
+
+    // Auto-remove depois de 15 segundos se o usuário não interagir
+    const timeoutRemove = setTimeout(() => {
+      console.log('⏰ Notificação expirada por timeout');
+      if (updateMsg.parentNode) {
+        updateMsg.style.animation = 'slideDown 0.3s ease-out forwards';
+        setTimeout(() => updateMsg.remove(), 300);
+      }
+    }, 15000);
+
+    btnAtualizar.addEventListener('click', () => {
+      console.log('✅ Usuário clicou em "Atualizar"');
+      clearTimeout(timeoutRemove);
+      updateMsg.innerHTML = '<span style="flex: 1;">⏳ Atualizando...</span>';
+      updateMsg.style.pointerEvents = 'none';
+      
+      if (reg.waiting) {
+        console.log('📤 Enviando SKIP_WAITING para o Service Worker');
+        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        
+        // Aguarda antes de remover para garantir que a atualização foi processada
+        setTimeout(() => {
+          if (updateMsg.parentNode) updateMsg.remove();
+        }, 2500);
+      } else {
+        setTimeout(() => {
+          if (updateMsg.parentNode) updateMsg.remove();
+        }, 500);
+      }
     });
 
-    document.getElementById('btnAdiarUpdate').addEventListener('click', () => {
-      updateMsg.remove();
+    btnAdiar.addEventListener('click', () => {
+      console.log('⏭️ Usuário clicou em "Depois"');
+      clearTimeout(timeoutRemove);
+      updateMsg.style.animation = 'slideDown 0.3s ease-out forwards';
+      setTimeout(() => {
+        if (updateMsg.parentNode) updateMsg.remove();
+      }, 300);
     });
   }
 </script>
