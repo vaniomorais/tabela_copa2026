@@ -361,6 +361,16 @@ h3.grupo-titulo {
   background: #f0fdf4;
 }
 
+.jogo-card.realizado .jogo-preenchimento-compacto.match-card {
+  border-color: rgba(21, 128, 61, .45);
+  background: #f0fdf4;
+}
+
+.jogo-preenchimento-compacto.match-card {
+  border: 1px solid var(--cor-borda);
+  border-radius: 14px;
+}
+
 .jogo-resultado,
 .jogo-preenchimento-compacto {
   display: grid;
@@ -1462,8 +1472,9 @@ body.dark-mode .tabela-grupo tbody tr:hover {
   background: #1e293b;
 }
 
-body.dark-mode .jogo-card.realizado {
+body.dark-mode .jogo-card.realizado .jogo-preenchimento-compacto.match-card{
   background: rgba(22, 101, 52, 0.22);
+  border-color: rgba(21, 128, 61, .45);
 }
 
 body.dark-mode .placar-compacto {
@@ -1500,10 +1511,6 @@ body.dark-mode .grid-mata-mata .jogo-card {
   background: #0f172a;
 }
 
-body.dark-mode .grid-mata-mata .jogo-card.realizado {
-  background: rgba(22, 101, 52, 0.22);
-  border-color: rgba(34, 197, 94, 0.45);
-}
 
 .pagina-resultados {
   max-width: 1200px;
