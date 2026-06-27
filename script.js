@@ -156,9 +156,6 @@ let jogos = [
   { rodada: 3, data: "2026-06-27", hora: "23:00", grupo: "J", time1: "dz", time2: "at", resultado: null }
 ];
 
-// NOTA: MAPA_TERCEIROS_FIFA é definido em conbinacoes-fifa.js com as 495 combinações possíveis
-// Não redefina aqui para não sobrescrever o mapa gerado dinamicamente
-
 // Variáveis globais
 let rodadaAtual = 1;
 let jogoEmEdicao = null;
@@ -536,13 +533,9 @@ function mostrarNotificacao(mensagem, tipo = "info") {
 }
 
 // ================== GUARDA LOCAL (LOCALSTORAGE) ==================
-
-
 function todosGruposConcluidos() {
     return CONFIG_COPA_2026.GRUPOS.every(letra => grupoConcluido(letra));
 }
-
-
 
 function obterTop8Terceiros() {
     // FUNCAO: Classifica os 8 melhores 3o colocados de todos os grupos
@@ -584,8 +577,6 @@ function obterTop8Terceiros() {
     return terceiros.slice(0, 8);
 }
 
-
-
 function calcularMelhoresTerceiros() {
     // FUNCAO: Mapeia os 8 melhores 3o colocados para os slots de jogo conforme combinacoes FIFA
     // Usa MAPA_TERCEIROS_FIFA (495 combinacoes oficiais) para determinar qual terceiro vai para cada jogo
@@ -624,8 +615,6 @@ function calcularMelhoresTerceiros() {
 
     return resultado;
 }
-
-
 
 function obterInformacoesCombinacaoFIFA() {
     // FUNCAO AUXILIAR: Retorna informacoes sobre qual combinacao FIFA esta sendo usada
@@ -688,8 +677,6 @@ function mudarFase(direcao) {
 
     atualizarInterfaceFase();
 }
-
-
 
 function traduzirMarcador(textoMarcador, idJogo = null, mapaTerceiros = null) {
     // FUNCAO: Converte descricoes de times para objetos com nome e codigo
@@ -1428,7 +1415,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // ================== FUNÇÕES AUXILIARES ==================
-
 function obterTimeDoJogo(jogo, lado) {
   if (!jogo || !grupos[jogo.grupo]) return null;
   return grupos[jogo.grupo][lado === 1 ? jogo.time1 : jogo.time2] || null;
