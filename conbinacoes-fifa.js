@@ -17,7 +17,7 @@ const MAPEAMENTO_1A_PARA_JOGO = {
 };
 
 // Slots de jogo que recebem 3o colocados
-window.SLOTS_JOGOS = [74, 77, 79, 80, 81, 82, 86, 87];
+window.SLOTS_JOGOS = [74, 77, 79, 80, 81, 82, 85, 87];
 
 // Inicia o mapa vazio
 window.MAPA_TERCEIROS_FIFA = {};

@@ -172,6 +172,18 @@ try {
 }
 
 // ================== FUNÇÕES DE TABELAS ==================
+function verificarSeMelhorTerceiro(codigoTime) {
+  // FUNÇÃO: Verifica se um time (código) é um dos 8 melhores terceiros colocados
+  // Retorna: true se é um dos 8 melhores terceiros, false caso contrário
+  
+  if (!todosGruposConcluidos()) {
+    return false; // Todos grupos precisam estar concluídos
+  }
+
+  const oitoMelhores = obterTop8Terceiros();
+  return oitoMelhores.some(t => t.time.codigo === codigoTime);
+}
+
 function gerarTabelas() {
   const container = document.getElementById("gruposContainer");
   container.innerHTML = "";
@@ -391,6 +403,19 @@ function confirmarResultado(jogoIndex) {
   atualizarTodasTabelas();
   renderizarJogosDaRodada();
   salvarDados();
+  
+  // Verifica se todos os grupos foram concluídos para processar terceiros
+  if (todosGruposConcluidos()) {
+    let mapaTerceiros = calcularMelhoresTerceiros();
+    if (Object.keys(mapaTerceiros).length > 0) {
+      // Re-renderiza as tabelas para aplicar estilização aos terceiros
+      atualizarTodasTabelas();
+      // Renderiza a fase de mata-mata com os terceiros
+      renderizarMataMata();
+      mostrarNotificacao("✅ Grupos concluídos! Terceiros colocados apurados e transferidos para mata-mata!", "sucesso");
+    }
+  }
+  
   mostrarNotificacao(`Resultado de ${time1.nome} x ${time2.nome} registrado!`, "sucesso");
 }
 
@@ -1482,23 +1507,7 @@ function calcularRanking(grupoId) {
   return Object.values(grupos[grupoId] || {}).slice().sort((a, b) => compararTimes(a, b, grupoId));
 }
 
-function confirmarResultado(jogoIndex) {
-  const placar = lerPlacarDoCard(jogoIndex);
-  const jogo = jogos[jogoIndex];
-  if (!placar || !jogo || jogo.resultado) return;
 
-  const time1 = obterTimeDoJogo(jogo, 1);
-  const time2 = obterTimeDoJogo(jogo, 2);
-  if (!time1 || !time2) return;
-
-  aplicarResultadoAosTimes(time1, time2, placar.gols1, placar.gols2, 1);
-  jogo.resultado = placar;
-
-  atualizarTabela(jogo.grupo);
-  renderizarJogosDaRodada();
-  salvarDados();
-  mostrarNotificacao(`Resultado de ${time1.nome} x ${time2.nome} registrado!`, 'sucesso');
-}
 
 function salvarEdicao(jogoIndex) {
   const placar = lerPlacarDoCard(jogoIndex);
@@ -1514,9 +1523,18 @@ function salvarEdicao(jogoIndex) {
   jogo.resultado = placar;
   jogoEmEdicao = null;
 
-  atualizarTabela(jogo.grupo);
+  atualizarTodasTabelas();
   renderizarJogosDaRodada();
   salvarDados();
+  
+  // Verifica se todos os grupos foram concluídos
+  if (todosGruposConcluidos()) {
+    let mapaTerceiros = calcularMelhoresTerceiros();
+    if (Object.keys(mapaTerceiros).length > 0) {
+      renderizarMataMata();
+    }
+  }
+  
   mostrarNotificacao('Resultado atualizado com sucesso!', 'sucesso');
 }
 
